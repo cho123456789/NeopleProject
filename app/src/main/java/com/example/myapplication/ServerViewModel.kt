@@ -8,6 +8,8 @@ import com.example.myapplication.network.NeopleApiService
 import com.example.myapplication.network.ServerResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
@@ -24,14 +26,16 @@ class ServerViewModel(
         .build()
         .create(NeopleApiService::class.java)
 
-    private val _serverNames = MutableLiveData<List<String>>()
-    private val _serverIds = MutableLiveData<List<String>>()
+    private val _serverNames = MutableStateFlow<List<String>>(emptyList())
+    val serverNames: StateFlow<List<String>> = _serverNames
 
+    private val _serverIds = MutableStateFlow<List<String>>(emptyList())
+    val serverId: StateFlow<List<String>> = _serverIds
 
-    val serverNames: LiveData<List<String>> = _serverNames
-    val serverId: LiveData<List<String>> = _serverIds
-
-
+    init{
+        _serverIds.value = emptyList()
+        _serverIds.value = emptyList()
+    }
     fun getServers() {
         viewModelScope.launch {
             val serverResponse = getServersFromApi()
