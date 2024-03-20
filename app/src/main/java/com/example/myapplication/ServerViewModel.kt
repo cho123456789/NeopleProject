@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
@@ -21,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.InputStream
 
 class ServerViewModel(
-     val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) :ViewModel() {
     private val API_KEY = "tqUtxGZX3aszriKokC1rUj4FWuR0ndi9"
 
@@ -30,6 +31,13 @@ class ServerViewModel(
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(NeopleApiService::class.java)
+
+    private val neopleApiServiceImg = Retrofit.Builder()
+        .baseUrl("https://img-api.neople.co.kr/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(NeopleApiService::class.java)
+
 
     private val _characterId = MutableStateFlow<List<String>>(emptyList())
     val characterId: StateFlow<List<String>> = _characterId
@@ -70,6 +78,8 @@ class ServerViewModel(
                 _characterId.value = characterId
                 _characterName.value = characterName
 
+                val characterIdString = characterId.joinToString(separator = ", ")
+                //getCharacterImg(serverId,characterIdString,"1")
 
             } else {
 
@@ -94,12 +104,13 @@ class ServerViewModel(
             }
         }
     }
-    suspend fun getCharacterImageFromApi(serverId: String, characterId: String, zoom: String): Response<ResponseBody> {
+    suspend fun getCharacterImageFromApi(serverId: String, characterId: String, zoom: String): Response<ResponseBody>? {
         return withContext(Dispatchers.IO) {
             try {
-                neopleApiService.getCharacterImage(serverId, characterId, zoom)
+                neopleApiServiceImg.getCharacterImage(serverId, characterId, zoom)
             } catch (e: Exception) {
-                throw e // 예외 다시 throw
+                Log.e("ServerViewModel", "Failed to fetch character image: ${e.message}")
+                null
             }
         }
     }
@@ -108,15 +119,15 @@ class ServerViewModel(
         viewModelScope.launch {
             try {
                 val characterResponse = getCharacterImageFromApi(serverId, characterId, zoom)
-                if (characterResponse.isSuccessful) {
+                if (characterResponse?.isSuccessful == true) {
                     val inputStream: InputStream? = characterResponse.body()?.byteStream()
                     val bitmap = BitmapFactory.decodeStream(inputStream)
                     _imageBitmap.value = bitmap?.asImageBitmap()
                 } else {
-                    // 실패 처리
+                    Log.e("ServerViewModel", "Failed to fetch character image: ${characterResponse?.message()}")
                 }
             } catch (e: Exception) {
-                // 네트워크 호출 실패 처리
+                Log.e("ServerViewModel", "Exception while fetching character image: ${e.message}")
             }
         }
     }

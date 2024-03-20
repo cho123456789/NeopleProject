@@ -2,10 +2,12 @@ package com.example.myapplication
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -26,26 +28,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 class MainActivity : AppCompatActivity() {
+    private val serverViewModel: ServerViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
                 Surface {
-                    ComposeDropdownMenuExample()
+                    ComposeDropdownMenuExample(serverViewModel)
                 }
             }
         }
     }
 
     @Composable
-    fun DropdownMenuExample(items: List<Pair<String, String>>) {
-        val serverViewModel: ServerViewModel = viewModel()
+    fun DropdownMenuExample(items: List<Pair<String, String>>, serverViewModel: ServerViewModel) {
         var expanded by remember { mutableStateOf(false) }
         var selectedIndex by remember { mutableStateOf(0) }
         var serverId by remember { mutableStateOf("") }
@@ -80,12 +84,12 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.padding(16.dp)
                 )
             }
-            SimpleOutlinedTextFieldSample(serverId,serverViewModel)
+            SimpleOutlinedTextFieldSample(serverId, serverViewModel)
         }
     }
 
     @Composable
-    fun ComposeDropdownMenuExample() {
+    fun ComposeDropdownMenuExample(serverViewModel: ServerViewModel) {
         val items = listOf(
             Pair("cain", "카인"),
             Pair("diregie", "디레지에"),
@@ -96,17 +100,17 @@ class MainActivity : AppCompatActivity() {
             Pair("anton", "안톤"),
             Pair("bakal", "바칼")
         )
-        DropdownMenuExample(items = items)
+        DropdownMenuExample(items = items, serverViewModel)
     }
 
     @Composable
-    fun SimpleOutlinedTextFieldSample(serverId: String ,serverViewModel: ServerViewModel) {
+    fun SimpleOutlinedTextFieldSample(serverId: String, serverViewModel: ServerViewModel) {
         var characterName by remember { mutableStateOf("") }
-        var characterId by remember { mutableStateOf("") }
+        var showCharacterInfo by remember { mutableStateOf(false) } // 상태 추가
 
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             OutlinedTextField(
                 value = characterName,
                 onValueChange = { characterName = it },
@@ -116,62 +120,51 @@ class MainActivity : AppCompatActivity() {
             Button(
                 modifier = Modifier.padding(top = 10.dp, start = 10.dp),
                 onClick = {
-                    serverViewModel.getCharacter(serverId, characterName)
+                    showCharacterInfo = true
                 }
             ) {
                 Text("확인")
             }
         }
-        CharacterInfoTextView(serverId,serverViewModel)
+        if(showCharacterInfo) {
+            CharacterInfoTextView(
+                serverViewModel = serverViewModel,
+                serverId = serverId)
+            serverViewModel.getCharacter(serverId,characterName)
+        }
     }
+
     @Composable
     fun CharacterInfoTextView(
-        serverId: String,
-        serverViewModel: ServerViewModel
+        serverViewModel: ServerViewModel,
+        serverId: String
     ) {
         val characterName by serverViewModel.characterName.collectAsState()
         val characterId by serverViewModel.characterId.collectAsState()
         val characterLevel by serverViewModel.level.collectAsState()
         val jobGrowName by serverViewModel.jobGrowName.collectAsState()
+        val bitmap by serverViewModel.imageBitmap.collectAsState()
+        val painter = bitmap?.let { BitmapPainter(it) }
 
-        Log.d("TAG","ServerId"+ "${serverId} , characterId" + characterId)
-
-        serverViewModel.getCharacterImg(serverId, characterId.toString(), "1")
-
+        serverViewModel.getCharacterImg(serverId,characterId.joinToString(", "),"1")
         Column(
             modifier = Modifier.padding(vertical = 8.dp)
         ) {
-            Text("Character Name: $characterName")
-            Text("Character ID: $characterId")
-            Text("Character Level: $characterLevel")
-            Text("Job Grow Name: $jobGrowName")
-//            LoadCharacterImage(
-//                serverId= serverId,
-//                characterId = characterId,
-//                zoom = "1",
-//                serverViewModel = serverViewModel
-//                )
+            Text("Character Name: ${characterName.joinToString(", ")}")
+            Text("Character ID: ${characterId.joinToString(", ")}")
+            Text("Character Level: ${characterLevel.joinToString(", ")}")
+            Text("Job Grow Name: ${jobGrowName.joinToString(", ")}")
+            bitmap?.let {
+                if (painter != null) {
+                    Image(
+                        modifier = Modifier.fillMaxSize(),
+                        alignment = Alignment.Center,
+                        painter = painter,
+                        contentDescription = null // 이미지에 대한 설명이 필요한 경우 여기에 추가
+                    )
+                }
+            }
         }
-    }
-    @Composable
-    fun LoadCharacterImage(
-        serverId: String,
-        characterId :String,
-        zoom : String,
-        serverViewModel: ServerViewModel
-    )
-    {
-
-    }
-    @Composable
-    fun LoadBitmapImage(bitmap: ImageBitmap) {
-        val painter: Painter = BitmapPainter(bitmap)
-
-        Image(
-            modifier = Modifier.fillMaxWidth(),
-            painter = painter,
-            contentDescription = null // 이미지에 대한 설명이 필요한 경우 여기에 추가
-        )
     }
 
     @Preview(showBackground = true)
