@@ -1,15 +1,22 @@
 package com.example.myapplication
+import android.graphics.Paint.Align
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -25,12 +32,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 
@@ -59,7 +71,9 @@ class MainActivity : AppCompatActivity() {
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },
-                    modifier = Modifier.padding(16.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
                 ) {
                     items.forEachIndexed { index, item ->
                         DropdownMenuItem(
@@ -130,7 +144,7 @@ class MainActivity : AppCompatActivity() {
             CharacterInfoTextView(
                 serverViewModel = serverViewModel,
                 serverId = serverId)
-            serverViewModel.getCharacter(serverId,characterName)
+            serverViewModel.getCharacterId("cain",characterName)
         }
     }
 
@@ -143,25 +157,93 @@ class MainActivity : AppCompatActivity() {
         val characterId by serverViewModel.characterId.collectAsState()
         val characterLevel by serverViewModel.level.collectAsState()
         val jobGrowName by serverViewModel.jobGrowName.collectAsState()
+        val adventureName by serverViewModel.adventureName.collectAsState()
         val bitmap by serverViewModel.imageBitmap.collectAsState()
         val painter = bitmap?.let { BitmapPainter(it) }
 
-        serverViewModel.getCharacterImg(serverId,characterId.joinToString(", "),"1")
+        val borderColor = Color(android.graphics.Color.parseColor("#E2E2E2")) // 헥사 값으로 빨간색을 정의
+        serverViewModel.getCharacter("cain",characterId.joinToString(", "))
+        serverViewModel.getCharacterImg("cain",characterId.joinToString(", "),"1")
         Column(
             modifier = Modifier.padding(vertical = 8.dp)
+                .padding(
+                    start = 50.dp)
         ) {
-            Text("Character Name: ${characterName.joinToString(", ")}")
-            Text("Character ID: ${characterId.joinToString(", ")}")
-            Text("Character Level: ${characterLevel.joinToString(", ")}")
-            Text("Job Grow Name: ${jobGrowName.joinToString(", ")}")
-            bitmap?.let {
-                if (painter != null) {
-                    Image(
-                        modifier = Modifier.fillMaxSize(),
-                        alignment = Alignment.Center,
-                        painter = painter,
-                        contentDescription = null // 이미지에 대한 설명이 필요한 경우 여기에 추가
-                    )
+            Box(
+                modifier = Modifier
+                    .size(width = 300.dp, 400.dp)
+                    .border(width = 1.dp, color = borderColor, shape = RectangleShape)
+                    .align(Alignment.CenterHorizontally)
+            ){
+                Column(
+                ) {
+                    bitmap?.let {
+                        if (painter != null) {
+                            Image(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .size(width = 300.dp, height = 250.dp),
+                                alignment = Alignment.Center,
+                                painter = painter,
+                                contentDescription = null // 이미지에 대한 설명이 필요한 경우 여기에 추가
+                            )
+                        }
+                        Text(
+                            text = adventureName,
+                            modifier = Modifier.padding(
+                                start = 120.dp, end = 5.dp
+                            ),
+                            fontSize = 20.sp,
+                            textAlign = TextAlign.Center,
+                            color = Color.Blue
+                        )
+                        Text(
+                            text = characterName,
+                            modifier = Modifier.padding(
+                                start = 120.dp, end = 5.dp
+                            ),
+                            fontSize = 30.sp,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            text = jobGrowName,
+                            modifier = Modifier.padding(
+                                start = 105.dp, end = 5.dp
+                            ),
+                            fontSize = 20.sp,
+                            textAlign = TextAlign.Center,
+                            color = Color.Gray
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.padding(10.dp)
+                            .align(Alignment.CenterHorizontally)
+                    ) {
+                        Button(
+                            onClick = {},
+                            contentPadding = PaddingValues(12.dp),
+                            modifier = Modifier.wrapContentSize()
+                        ) {
+                            Text("장비")
+                        }
+
+                        Button(
+                            onClick = {},
+                            contentPadding = PaddingValues(12.dp),
+                            modifier = Modifier.wrapContentSize()
+                                .padding(start = 10.dp)
+                        ) {
+                            Text("아바타")
+                        }
+                        Button(
+                            onClick = {},
+                            contentPadding = PaddingValues(12.dp),
+                            modifier = Modifier.wrapContentSize()
+                                .padding(start = 10.dp)
+                        ) {
+                            Text("크리쳐")
+                        }
+                    }
                 }
             }
         }

@@ -21,4 +21,6 @@ data class Character (
     var jobGrowName : String,
     @SerializedName("fame")
     var fame : Int,
+    @SerializedName("adventureName")
+    var adventureName : String,
 )

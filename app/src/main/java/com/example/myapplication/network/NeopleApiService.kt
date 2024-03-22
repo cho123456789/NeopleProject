@@ -17,9 +17,16 @@ interface NeopleApiService {
     ): Response<ResponseBody>
 
     @GET("df/servers/{serverId}/characters")
-    fun getCharacter(
+    fun getCharacterId(
         @Path("serverId") serverId : String,
         @Query("characterName") characterName : String,
         @Query("apikey") apiKey: String,
     ):Call<CharacterResponse>
+
+    @GET("df/servers/{serverId}/characters/{characterId}")
+    fun getCharacter(
+        @Path("serverId") serverId : String,
+        @Path("characterId") characterId : String,
+        @Query("apikey") apiKey: String,
+    ):Call<Character>
 }
