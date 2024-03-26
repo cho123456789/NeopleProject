@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.myapplication"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -50,6 +50,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.lifecycle.coroutine)
+    implementation(libs.androidx.room)
+    implementation(libs.androidx.navigation)
     implementation(libs.androidx.liveData)
     implementation(libs.okhttpConverter)
     implementation(libs.retrofit)
@@ -64,6 +67,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.compose.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

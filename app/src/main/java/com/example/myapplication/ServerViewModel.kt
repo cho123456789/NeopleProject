@@ -7,8 +7,13 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dto.CharacterDto
+import com.example.dao.CharacterDao
 import com.example.myapplication.network.Character
+import com.example.myapplication.network.CharacterEqResponse
+import com.example.myapplication.network.CharacterEquipment
 import com.example.myapplication.network.CharacterResponse
+import com.example.myapplication.network.Equipment
 import com.example.myapplication.network.NeopleApiService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -56,9 +61,19 @@ class ServerViewModel(
     val level: StateFlow<List<Int>> = _level
 
 
-
     private val _imageBitmap = MutableStateFlow<ImageBitmap?>(null)
     val imageBitmap: StateFlow<ImageBitmap?> = _imageBitmap
+
+
+    private val _slotName = MutableStateFlow("")
+    val slotName: StateFlow<String> = _slotName
+
+    private val _itemType = MutableStateFlow("")
+    val itemType: StateFlow<String> = _itemType
+
+    private val _itemName = MutableStateFlow("")
+    val itemName: StateFlow<String> = _itemName
+
 
 
     init {
@@ -66,7 +81,46 @@ class ServerViewModel(
         _characterName.value = ""
         _level.value = emptyList()
         _jobGrowName.value = ""
+        _slotName.value = ""
+        _itemType.value = ""
+        _itemName.value = ""
 
+    }
+
+    fun getCharacterEquiment(serverId: String, characterNameItem: String) {
+        characterNameItem.let { names ->
+            Log.d("TAG","names : ${names}")
+                viewModelScope.launch {
+                    val characterEqResponse = getCharacterEquimentFromApi(serverId, names)
+                    Log.d("TAG","characterEqResponse : ${characterEqResponse}")
+                    if (characterEqResponse != null) {
+                        Log.d("TAG","characterEqResponse : ${characterEqResponse.characterName}")
+                        val equipmentNames = mutableListOf<String>()
+                        // 모든 장비의 이름을 가져와 리스트에 추가
+                        Log.d("TAG", "Equipment Names: $equipmentNames")
+                    } else {
+                    }
+                }
+        }
+    }
+    private suspend fun getCharacterEquimentFromApi(
+        serverId: String,
+        characterId: String
+    ): CharacterEquipment? {
+        return withContext(ioDispatcher) {
+            try {
+                val response = neopleApiService.getEquipment(serverId, characterId, API_KEY).execute()
+                if (response.isSuccessful) {
+                    Log.d("TAG","characterEqResponse : ${response}")
+                    response.body()
+
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                null
+            }
+        }
     }
 
     fun getCharacterId(serverId: String, characterNameItem: String) {
@@ -93,6 +147,12 @@ class ServerViewModel(
             }
         }
     }
+    fun insertCharacter(characterDao : CharacterDao, characterDto : CharacterDto){
+        viewModelScope.launch{
+            characterDao.insert(characterDto)
+        }
+    }
+
     private suspend fun getCharacterFromApi(
         serverId: String,
         characterId: String

@@ -29,4 +29,11 @@ interface NeopleApiService {
         @Path("characterId") characterId : String,
         @Query("apikey") apiKey: String,
     ):Call<Character>
+
+    @GET("df/servers/{serverId}/characters/{characterId}/equip/equipment")
+    fun getEquipment(
+        @Path("serverId") serverId : String,
+        @Path("characterId") characterId : String,
+        @Query("apikey") apiKey: String,
+    ):Call<CharacterEquipment>
 }
