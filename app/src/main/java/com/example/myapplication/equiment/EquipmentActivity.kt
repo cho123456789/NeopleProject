@@ -18,6 +18,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,7 +34,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W300
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,6 +45,7 @@ import com.database.characterDatabase
 import com.dto.CharacterDto
 import com.example.dao.CharacterDao
 import com.example.myapplication.ServerViewModel
+import com.example.myapplication.network.CharacterEquipment
 import com.example.myapplication.network.Item
 
 
@@ -56,56 +61,53 @@ class EquipmentActivity : AppCompatActivity() {
             }
         }
     }
+
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun OtherActivityContent(serverViewModel: ServerViewModel) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(
-                        top = 5.dp,
-                        start = 30.dp
-                    ),
-            ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = 5.dp,
+                    start = 30.dp,
+                    end = 20.dp
+                ),
+        ) {
 
-                val characterItem by serverViewModel.characterId.collectAsState()
-                val characterName by serverViewModel.characterName.collectAsState()
+            val characterItem by serverViewModel.characterId.collectAsState()
+            val characterName by serverViewModel.characterName.collectAsState()
 
-                Log.d(
-                    "TAG", "characterItem : ${characterItem} " +
-                            "" + "characterName : ${characterName} "
+            Log.d(
+                "TAG", "characterItem : ${characterItem} " +
+                        "" + "characterName : ${characterName} "
+            )
+
+            val characterItemId = characterItem.joinToString(", ")
+            serverViewModel.getCharacterId("cain", characterName)
+            serverViewModel.getCharacterEquiment("cain", characterItemId)
+
+            Box(
+                modifier = Modifier.background(
+                    color = Color.Gray
                 )
-
-                val characterItemId = characterItem.joinToString(", ")
-                serverViewModel.getCharacterId("cain", characterName)
-                serverViewModel.getCharacterEquiment("cain", characterItemId)
-
-                Box(
-                    modifier = Modifier.background(
-                        color = Color.Gray
+            ) {
+                Text(
+                    text = "장착 장비 : Equipment",
+                    color = Color.White,
+                    fontSize = 30.sp,
+                    fontWeight = W300,
+                    modifier = Modifier.padding(
+                        5.dp
                     )
-                ) {
-                    Text(
-                        text = "장착 장비 : Equipment",
-                        color = Color.White,
-                        fontSize = 30.sp,
-                        fontWeight = W300,
-                        modifier = Modifier.padding(
-                            5.dp
-                        )
-                    )
-                }
+                )
             }
 
                 val slotName by serverViewModel.slotName.collectAsState()
                 val itemType by serverViewModel.itemType.collectAsState()
-                val itemName by serverViewModel.itemName.collectAsState()
-
-
-                Log.d("TAG","slotName : ${slotName} " +
-                        "" +"itemType : ${itemType} " +
-                        "" +"itemName : ${itemName} "
-                )
+                val equipment by serverViewModel.equipment.collectAsState()
+                Log.d("TAG","characterEqResponse : ${equipment}")
+                EquipmentList(equipment)
                 Text(
                     text = slotName,
                     color = Color.Black
@@ -113,6 +115,65 @@ class EquipmentActivity : AppCompatActivity() {
                 Text(text = itemType)
             }
         }
+    @Composable
+    fun EquipmentList(equipment: List<Item>){
+        LazyColumn {
+            itemsIndexed(equipment) { index, item ->
+                if (index != 1) {
+                    EquipmentRow(item)
+                }
+            }
+        }
+    }
+    @Composable
+    fun EquipmentRow(item: Item) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(2.dp)
+                    .wrapContentSize(),
+            ) {
+                Text(
+                    text = "${item.slotName}",
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "융합 장비",
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .padding(2.dp)
+                    .wrapContentSize(),
+                    verticalArrangement = Arrangement.Center,
+                    Alignment.End
+            ) {
+                Text(
+                    text = "${item.itemName}",
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp,
+                    textAlign = TextAlign.Right
+                )
+                Text(
+                    text = "${item.upgradeInfo?.itemName}",
+                    color = Color.Red,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 13.sp,
+                    textAlign = TextAlign.Right
+                )
+            }
+        }
+    }
+}
 
     @Preview(showBackground = true)
     @Composable

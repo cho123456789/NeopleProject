@@ -13,6 +13,7 @@ import com.example.myapplication.network.Character
 import com.example.myapplication.network.CharacterEqResponse
 import com.example.myapplication.network.CharacterEquipment
 import com.example.myapplication.network.CharacterResponse
+import com.example.myapplication.network.Item
 import com.example.myapplication.network.NeopleApiService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -73,7 +74,8 @@ class ServerViewModel(
     private val _itemName = MutableStateFlow("")
     val itemName: StateFlow<String> = _itemName
 
-
+    private val _equipment = MutableStateFlow<List<Item>>(emptyList())
+    val equipment: StateFlow<List<Item>> = _equipment
 
     init {
         _characterId.value = emptyList()
@@ -93,7 +95,7 @@ class ServerViewModel(
                     val characterEqResponse = getCharacterEquimentFromApi(serverId, names)
                         Log.d("TAG","characterEqResponse : ${characterEqResponse}")
                     if (characterEqResponse != null) {
-                        Log.d("TAG","characterEqResponse : ${characterEqResponse.equipment}")
+                        _equipment.value = characterEqResponse.equipment
                         // 모든 장비의 이름을 가져와 리스트에 추가
                     }
                 }
