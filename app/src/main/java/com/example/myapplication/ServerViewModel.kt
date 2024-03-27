@@ -13,7 +13,6 @@ import com.example.myapplication.network.Character
 import com.example.myapplication.network.CharacterEqResponse
 import com.example.myapplication.network.CharacterEquipment
 import com.example.myapplication.network.CharacterResponse
-import com.example.myapplication.network.Equipment
 import com.example.myapplication.network.NeopleApiService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -92,13 +91,10 @@ class ServerViewModel(
             Log.d("TAG","names : ${names}")
                 viewModelScope.launch {
                     val characterEqResponse = getCharacterEquimentFromApi(serverId, names)
-                    Log.d("TAG","characterEqResponse : ${characterEqResponse}")
+                        Log.d("TAG","characterEqResponse : ${characterEqResponse}")
                     if (characterEqResponse != null) {
-                        Log.d("TAG","characterEqResponse : ${characterEqResponse.characterName}")
-                        val equipmentNames = mutableListOf<String>()
+                        Log.d("TAG","characterEqResponse : ${characterEqResponse.equipment}")
                         // 모든 장비의 이름을 가져와 리스트에 추가
-                        Log.d("TAG", "Equipment Names: $equipmentNames")
-                    } else {
                     }
                 }
         }
