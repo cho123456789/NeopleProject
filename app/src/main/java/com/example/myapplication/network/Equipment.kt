@@ -87,6 +87,8 @@ data class TransformInfo(
 )
 
 data class Enchant(
+    @SerializedName("explain")
+    val explain: String,
     @SerializedName("status")
     val status: List<Status>
 )

@@ -143,11 +143,6 @@ class EquipmentActivity : AppCompatActivity() {
                     color = Color.Black,
                     fontWeight = FontWeight.Bold
                 )
-                Text(
-                    text = "융합 장비",
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold
-                )
             }
             Column(
                 modifier = Modifier
@@ -170,6 +165,42 @@ class EquipmentActivity : AppCompatActivity() {
                     fontSize = 13.sp,
                     textAlign = TextAlign.Right
                 )
+                val enchantName = item.enchant?.status?.map { it.name }?.toMutableList()
+                var enchantExplain = item.enchant?.explain
+                if(enchantExplain == null){
+                    enchantExplain = ""
+                }
+
+                val enchantValue = item.enchant?.status?.map { it.value }
+
+                val combinedString = StringBuilder()
+
+                if (enchantName != null) {
+                    for (i in enchantName.indices) {
+                        combinedString.append("${enchantName[i]} + ${enchantValue?.get(i)} "+"\n")
+                    }
+                }
+
+                Column(){
+                    if (enchantName != null && enchantExplain.isEmpty()) {
+                        Text(
+                            text = combinedString.toString(),
+                            color = Color(0xFFAD96FF),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 13.sp,
+                            textAlign = TextAlign.Right
+                        )
+                    }else{
+                            Text(
+                                text = enchantExplain +"\n" +combinedString.toString(),
+                                color = Color(0xFFAD96FF),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp,
+                                textAlign = TextAlign.Right
+                            )
+                    }
+
+                }
             }
         }
     }

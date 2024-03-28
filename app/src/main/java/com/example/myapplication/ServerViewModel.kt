@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.compose.ui.graphics.ImageBitmap
@@ -88,6 +89,7 @@ class ServerViewModel(
 
     }
 
+    @SuppressLint("SuspiciousIndentation")
     fun getCharacterEquiment(serverId: String, characterNameItem: String) {
         characterNameItem.let { names ->
             Log.d("TAG","names : ${names}")
