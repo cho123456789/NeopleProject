@@ -14,13 +14,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,23 +75,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-   @Composable
-   fun MyApp(serverViewModel: ServerViewModel){
-       val navController = rememberNavController()
+    @Composable
+    fun MyApp(serverViewModel: ServerViewModel){
+        val navController = rememberNavController()
 
-       NavHost(navController , startDestination = "home"){
-           composable("home"){
-               DropdownMenuExample(
-                   navController,
-                   serverViewModel)
-           }
-           composable("other_activity"){
-               EquipmentActivity().OtherActivityContent(serverViewModel)
-           }
-       }
+        NavHost(navController , startDestination = "home"){
+            composable("home"){
+                DropdownMenuExample(
+                    navController,
+                    serverViewModel)
+            }
+            composable("other_activity"){
+                EquipmentActivity().OtherActivityContent(serverViewModel)
+            }
+        }
 
-   }
+    }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun DropdownMenuExample(
         navController: NavController,
@@ -93,72 +108,78 @@ class MainActivity : AppCompatActivity() {
             Pair("anton", "안톤"),
             Pair("bakal", "바칼")
         )
-
+        var serverItem by remember { mutableStateOf("")
+        }
         var expanded by remember { mutableStateOf(false) }
+
         var selectedIndex by remember { mutableStateOf(0) }
+
         var serverId by remember { mutableStateOf("") }
 
-        Column {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false },
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth()
-                ) {
-                    items.forEachIndexed { index, item ->
-                        DropdownMenuItem(
-                            text = { Text(text = item.second) },
-                            onClick = {
-                                selectedIndex = index
-                                expanded = false
-                                serverId = item.first
-                            }
-                        )
-                    }
-                }
-                Button(
-                    modifier = Modifier.padding(top = 5.dp),
-                    onClick = { expanded = true }) {
-                    Text(text = "드롭다운 열기")
-                }
-                val selectedKorean = items[selectedIndex].second
-                // 선택된 아이템 표시
-                Text(
-                    text = "선택한 서버: ${selectedKorean}",
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
-            SimpleOutlinedTextFieldSample(serverId, serverViewModel,navController)
-        }
-    }
-    @Composable
-    fun SimpleOutlinedTextFieldSample(
-        serverId: String,
-        serverViewModel: ServerViewModel,
-        navController: NavController) {
         var characterName by remember { mutableStateOf("") }
+
         var showCharacterInfo by remember { mutableStateOf(false) } // 상태 추가
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OutlinedTextField(
-                value = characterName,
-                onValueChange = { characterName = it },
-                label = { Text("캐릭터 이름 입력") },
-                maxLines = 1
-            )
-            Button(
-                modifier = Modifier.padding(top = 10.dp, start = 10.dp),
-                onClick = {
-                    showCharacterInfo = true
-                }
+            Row(
+                modifier = Modifier
+                    .padding(
+                        start = 5.dp,
+                        top =5.dp,
+                        bottom =10.dp,
+                        end = 10.dp
+                    )
             ) {
-                Text("확인")
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = { expanded = it },
+
+                    ) {
+                    OutlinedTextField(
+                        value = serverItem,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                        },
+                        textStyle = TextStyle.Default.copy(
+                            fontSize = 11.sp
+                        ),
+                        modifier = Modifier.menuAnchor().padding()
+                            .size(width = 110.dp, height = 64.dp)
+                            .padding(start = 5.dp, top =8.dp , end =5.dp)
+                    )
+                    ExposedDropdownMenu(expanded = expanded, onDismissRequest = {/*TODO*/ }) {
+                        items.forEachIndexed { index, item ->
+                            DropdownMenuItem(
+                                text = { Text(text = item.second) },
+                                onClick = {
+                                    selectedIndex = index
+                                    serverItem = item.second
+                                    expanded = false
+                                    serverId = item.first
+                                }
+                            )
+                        }
+                    }
+                }
             }
-        }
+        OutlinedTextField(
+            value = characterName,
+            onValueChange = { characterName = it },
+            label = { Text("캐릭터 이름 입력") },
+            maxLines = 1,
+            modifier = Modifier.padding(
+               top = 5.dp,
+               end = 5.dp,
+               start = 120.dp
+            ).wrapContentSize(),
+            leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
+            trailingIcon = {
+                IconButton(onClick = { showCharacterInfo  = true }) {
+                    Icon(Icons.Default.Check, contentDescription = null)
+                }
+            }
+        )
         if(showCharacterInfo) {
             CharacterInfoTextView(
                 serverViewModel = serverViewModel,
@@ -166,6 +187,7 @@ class MainActivity : AppCompatActivity() {
             serverViewModel.getCharacterId("cain",characterName)
         }
     }
+
     @Composable
     fun CharacterInfoTextView(
         serverViewModel: ServerViewModel,
@@ -187,12 +209,13 @@ class MainActivity : AppCompatActivity() {
             modifier = Modifier
                 .padding(vertical = 8.dp)
                 .padding(
+                    top = 90.dp,
                     start = 50.dp
                 )
         ) {
             Box(
                 modifier = Modifier
-                    .size(width = 300.dp, 400.dp)
+                    .size(width = 300.dp, height= 600.dp)
                     .border(width = 1.dp, color = borderColor, shape = RectangleShape)
                     .align(Alignment.CenterHorizontally)
             ) {
@@ -243,7 +266,7 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         Button(
                             onClick = {
-                                        navController.navigate("other_activity")
+                                navController.navigate("other_activity")
                             } ,
                             contentPadding = PaddingValues(12.dp),
                             modifier = Modifier.wrapContentSize()
@@ -277,8 +300,8 @@ class MainActivity : AppCompatActivity() {
     @Preview(showBackground = true)
     @Composable
     fun GreetingPreview() {
-            MaterialTheme {
+        MaterialTheme {
 
-            }
         }
+    }
 }
