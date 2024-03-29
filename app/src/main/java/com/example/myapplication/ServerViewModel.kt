@@ -3,6 +3,8 @@ package com.example.myapplication
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
@@ -58,13 +60,15 @@ class ServerViewModel(
     private val _characterName = MutableStateFlow("")
     val characterName: StateFlow<String> = _characterName
 
-    private val _level = MutableStateFlow<List<Int>>(emptyList())
-    val level: StateFlow<List<Int>> = _level
+    private val _serverId = MutableStateFlow("")
+    val serverId: StateFlow<String> = _serverId
+
+    private val _level = MutableStateFlow<Int>(0)
+    val level: StateFlow<Int> = _level
 
 
     private val _imageBitmap = MutableStateFlow<ImageBitmap?>(null)
     val imageBitmap: StateFlow<ImageBitmap?> = _imageBitmap
-
 
     private val _slotName = MutableStateFlow("")
     val slotName: StateFlow<String> = _slotName
@@ -81,14 +85,16 @@ class ServerViewModel(
     init {
         _characterId.value = emptyList()
         _characterName.value = ""
-        _level.value = emptyList()
+        _level.value = 0
         _jobGrowName.value = ""
         _slotName.value = ""
         _itemType.value = ""
         _itemName.value = ""
 
     }
-
+    fun updateServerItem(newItem: String) {
+        _serverId.value = newItem
+    }
     @SuppressLint("SuspiciousIndentation")
     fun getCharacterEquiment(serverId: String, characterNameItem: String) {
         characterNameItem.let { names ->
@@ -142,6 +148,7 @@ class ServerViewModel(
                 _characterName.value = characterResponse.characterName
                 _jobGrowName.value = characterResponse.jobGrowName
                 _adventureName.value = characterResponse.adventureName
+                _level.value = characterResponse.level
             } else {
 
             }
