@@ -2,8 +2,6 @@ package com.example.myapplication
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageView
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -391,8 +389,8 @@ class MainActivity : AppCompatActivity() {
     @Preview(showBackground = true)
     @Composable
     fun GreetingPreview() {
-        MaterialTheme {
+            MaterialTheme {
 
+            }
         }
-    }
 }
