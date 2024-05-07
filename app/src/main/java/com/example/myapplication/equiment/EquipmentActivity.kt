@@ -151,6 +151,7 @@ class EquipmentActivity : AppCompatActivity() {
                         "金 : 각인된 상처의 도"-> R.drawable.swordgirl_gold_do
                         "土 : 따뜻한 봄날의 도"-> R.drawable.swordgirl_mok_do
                         "부조화 : 무너진 경계의 도" -> R.drawable.swordgirl_drak_do
+                        "불가침의 영역 - 도" -> R.drawable.swordgirl_bull_do
                         else -> R.drawable.defalut // 기본 이미지 설정
                     }
                     Text(
