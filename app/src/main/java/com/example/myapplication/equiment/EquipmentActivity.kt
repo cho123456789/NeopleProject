@@ -138,37 +138,39 @@ class EquipmentActivity : AppCompatActivity() {
                         .padding(2.dp)
                         .wrapContentSize(),
                 ) {
-                    val imageResource = when (item.itemName) {
-                        "仙 : 결전의 도 - 데몬슬레이어" -> R.drawable.swordgril_end_do
-                        "근원을 삼킨 도" -> R.drawable.swordgril_one_do
-                        "얼어붙은 저항의 도" ->R.drawable.swordgirl_call_do
-                        "내딛은 자의 도" -> R.drawable.swordgirl_none_do
-                        "광폭화된 전의의 도" -> R.drawable.swordgirl_gawn_do
-                        "사멸하는 신뢰의 도" -> R.drawable.swordgirl_posion_do
-                        "火  불타는 고난의 도" ->R.drawable.swordgirl_fire_do
-                        "水 : 오염된 눈의 도" -> R.drawable.swordgirl_water_do
-                        "木 : 그늘진 새벽의 도"-> R.drawable.swordgirl_tree_do
-                        "金 : 각인된 상처의 도"-> R.drawable.swordgirl_gold_do
-                        "土 : 따뜻한 봄날의 도"-> R.drawable.swordgirl_mok_do
-                        "부조화 : 무너진 경계의 도" -> R.drawable.swordgirl_drak_do
-                        "불가침의 영역 - 도" -> R.drawable.swordgirl_bull_do
-                        else -> R.drawable.defalut // 기본 이미지 설정
-                    }
-                    Text(
-                        text = "${item.slotName}",
-                        color = Color.Black,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Image(
-                        painter = painterResource(id = imageResource),
-                        contentDescription = "",
-                        modifier = Modifier.padding(
-                            start = 20.dp,
-                            top = 5.dp,
-                            end = 5.dp,
-                            bottom = 5.dp
+                    if(item.slotId == "WEAPON") {
+                        val imageResource = when (item.itemName) {
+                            "仙 : 결전의 도 - 데몬슬레이어" -> R.drawable.swordgril_end_do
+                            "근원을 삼킨 도" -> R.drawable.swordgril_one_do
+                            "얼어붙은 저항의 도" -> R.drawable.swordgirl_call_do
+                            "내딛은 자의 도" -> R.drawable.swordgirl_none_do
+                            "광폭화된 전의의 도" -> R.drawable.swordgirl_gawn_do
+                            "사멸하는 신뢰의 도" -> R.drawable.swordgirl_posion_do
+                            "火 : 불타는 고난의 도" -> R.drawable.swordgirl_fire_do
+                            "水 : 오염된 눈의 도" -> R.drawable.swordgirl_water_do
+                            "木 : 그늘진 새벽의 도" -> R.drawable.swordgirl_tree_do
+                            "金 : 각인된 상처의 도" -> R.drawable.swordgirl_gold_do
+                            "土 : 따뜻한 봄날의 도" -> R.drawable.swordgirl_mok_do
+                            "부조화 : 무너진 경계의 도" -> R.drawable.swordgirl_drak_do
+                            "불가침의 영역 - 도" -> R.drawable.swordgirl_bull_do
+                            else -> R.drawable.defalut // 기본 이미지 설정
+                        }
+                        Text(
+                            text = "${item.slotName}",
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold
                         )
-                    )
+                        Image(
+                            painter = painterResource(id = imageResource),
+                            contentDescription = "",
+                            modifier = Modifier.padding(
+                                start = 20.dp,
+                                top = 5.dp,
+                                end = 5.dp,
+                                bottom = 5.dp
+                            )
+                        )
+                    }
                         Text(
                             text = "${item.itemName}",
                             color = Color.Black,
