@@ -60,6 +60,9 @@ class ServerViewModel(
     private val _characterName = MutableStateFlow("")
     val characterName: StateFlow<String> = _characterName
 
+    private val _jobName = MutableStateFlow("")
+    val jobName : StateFlow<String> = _jobName
+
     private val _serverId = MutableStateFlow("")
     val serverId: StateFlow<String> = _serverId
 
@@ -149,6 +152,7 @@ class ServerViewModel(
                 _jobGrowName.value = characterResponse.jobGrowName
                 _adventureName.value = characterResponse.adventureName
                 _level.value = characterResponse.level
+                _jobName.value = characterResponse.jobName
             } else {
 
             }

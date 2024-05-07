@@ -1,10 +1,9 @@
 package com.example.myapplication.equiment
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -16,37 +15,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W300
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.LiveData
-import com.database.characterDatabase
-import com.dto.CharacterDto
-import com.example.dao.CharacterDao
+import com.example.myapplication.R
 import com.example.myapplication.ServerViewModel
-import com.example.myapplication.network.CharacterEquipment
 import com.example.myapplication.network.Item
 
 
@@ -114,6 +102,8 @@ class EquipmentActivity : AppCompatActivity() {
                     color = Color.Black
                 )
                 Text(text = itemType)
+
+
             }
     }
     @Composable
@@ -130,82 +120,113 @@ class EquipmentActivity : AppCompatActivity() {
     fun EquipmentRow(item: Item) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(5.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(
+            Box(
                 modifier = Modifier
-                    .padding(2.dp)
-                    .wrapContentSize(),
+                    .fillMaxWidth()
+                    .border(
+                        width = 2.dp, // 너비 5dp
+                        color = Color(android.graphics.Color.parseColor("#E2E2E2")), // 색상 파란색
+                        shape = RectangleShape // 네모 모양
+                    )
             ) {
-                Text(
-                    text = "${item.slotName}",
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            Column(
-                modifier = Modifier
-                    .padding(2.dp)
-                    .wrapContentSize(),
-                    verticalArrangement = Arrangement.Center,
-                    Alignment.End
-            ) {
-                Text(
-                    text = "${item.itemName}",
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
-                    textAlign = TextAlign.Right
-                )
-                Text(
-                    text = "${item.upgradeInfo?.itemName}",
-                    color = Color.Red,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp,
-                    textAlign = TextAlign.Right
-                )
-                val enchantName = item.enchant?.status?.map { it.name }?.toMutableList()
-                var enchantExplain = item.enchant?.explain
-                if(enchantExplain == null){
-                    enchantExplain = ""
-                }
-
-                val enchantValue = item.enchant?.status?.map { it.value }
-
-                val combinedString = StringBuilder()
-
-                if (enchantName != null) {
-                    for (i in enchantName.indices) {
-                        combinedString.append("${enchantName[i]} + ${enchantValue?.get(i)} "+"\n")
+                Row(
+                    modifier = Modifier
+                        .padding(2.dp)
+                        .wrapContentSize(),
+                ) {
+                    val imageResource = when (item.itemName) {
+                        "仙 : 결전의 도 - 데몬슬레이어" -> R.drawable.swordgril_end_do
+                        "근원을 삼킨 도" -> R.drawable.swordgril_one_do
+                        "얼어붙은 저항의 도" ->R.drawable.swordgirl_call_do
+                        "내딛은 자의 도" -> R.drawable.swordgirl_none_do
+                        "광폭화된 전의의 도" -> R.drawable.swordgirl_gawn_do
+                        "사멸하는 신뢰의 도" -> R.drawable.swordgirl_posion_do
+                        "火  불타는 고난의 도" ->R.drawable.swordgirl_fire_do
+                        "水 : 오염된 눈의 도" -> R.drawable.swordgirl_water_do
+                        "木 : 그늘진 새벽의 도"-> R.drawable.swordgirl_tree_do
+                        "金 : 각인된 상처의 도"-> R.drawable.swordgirl_gold_do
+                        "土 : 따뜻한 봄날의 도"-> R.drawable.swordgirl_mok_do
+                        "부조화 : 무너진 경계의 도" -> R.drawable.swordgirl_drak_do
+                        else -> R.drawable.defalut // 기본 이미지 설정
                     }
-                }
-
-                Column(){
-                    if (enchantName != null && enchantExplain.isEmpty()) {
+                    Text(
+                        text = "${item.slotName}",
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Image(
+                        painter = painterResource(id = imageResource),
+                        contentDescription = "",
+                        modifier = Modifier.padding(
+                            start = 20.dp,
+                            top = 5.dp,
+                            end = 5.dp,
+                            bottom = 5.dp
+                        )
+                    )
                         Text(
-                            text = combinedString.toString(),
-                            color = Color(0xFFAD96FF),
+                            text = "${item.itemName}",
+                            color = Color.Black,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 13.sp,
+                            fontSize = 15.sp,
                             textAlign = TextAlign.Right
                         )
-                    }else{
-                            Text(
-                                text = enchantExplain +"\n" +combinedString.toString(),
-                                color = Color(0xFFAD96FF),
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 13.sp,
-                                textAlign = TextAlign.Right
-                            )
-                    }
+                        Log.d("TAG",item.itemName)
 
+
+//                    Text(
+//                        text = "${item.upgradeInfo?.itemName}",
+//                        color = Color.Red,
+//                        fontWeight = FontWeight.Bold,
+//                        fontSize = 13.sp,
+//                        textAlign = TextAlign.Right
+//                    )
+//                    val enchantName = item.enchant?.status?.map { it.name }?.toMutableList()
+//                    var enchantExplain = item.enchant?.explain
+//                    if(enchantExplain == null){
+//                        enchantExplain = ""
+//                    }
+//
+//                    val enchantValue = item.enchant?.status?.map { it.value }
+//
+//                    val combinedString = StringBuilder()
+//
+//                    if (enchantName != null) {
+//                        for (i in enchantName.indices) {
+//                            combinedString.append("${enchantName[i]} + ${enchantValue?.get(i)} "+"\n")
+//                        }
+//                    }
+//
+//                    Column(){
+//                        if (enchantName != null && enchantExplain.isEmpty()) {
+//                            Text(
+//                                text = combinedString.toString(),
+//                                color = Color(0xFFAD96FF),
+//                                fontWeight = FontWeight.Bold,
+//                                fontSize = 13.sp,
+//                                textAlign = TextAlign.Right
+//                            )
+//                        }else{
+//                            Text(
+//                                text = enchantExplain +"\n" +combinedString.toString(),
+//                                color = Color(0xFFAD96FF),
+//                                fontWeight = FontWeight.Bold,
+//                                fontSize = 13.sp,
+//                                textAlign = TextAlign.Right
+//                            )
+//                        }
+//
+//                    }
+//                }
+//            }
                 }
             }
         }
     }
-
 }
 
     @Preview(showBackground = true)

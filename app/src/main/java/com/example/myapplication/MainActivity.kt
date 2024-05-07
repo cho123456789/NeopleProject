@@ -6,52 +6,33 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,14 +45,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.database.characterDatabase
-import com.dto.CharacterDto
-import com.example.dao.CharacterDao
 import com.example.myapplication.equiment.EquipmentActivity
 
 
@@ -230,6 +207,8 @@ class MainActivity : AppCompatActivity() {
 
         val characterName by serverViewModel.characterName.collectAsState()
 
+        val jobName by serverViewModel.jobName.collectAsState()
+
         val characterId by serverViewModel.characterId.collectAsState()
 
         val characterLevel by serverViewModel.level.collectAsState()
@@ -248,6 +227,8 @@ class MainActivity : AppCompatActivity() {
         serverViewModel.getCharacterImg("cain", characterId.joinToString(", "), "1")
         serverViewModel.updateServerItem(serverItem)
 
+        Log.d("JOBName : " ,  jobName)
+
         Row(
             modifier = Modifier
                 .padding(
@@ -265,8 +246,29 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate("other_activity")
                 }
             ){
+                val imageResource = when (jobName) {
+                    "귀검사(남)" -> R.drawable.swordman
+                    "귀검사(여)" -> R.drawable.swordgirl
+                    "거너(남)" -> R.drawable.gunner_m
+                    "거너(여)" -> R.drawable.gunner_g
+                    "마법사(여)"->R.drawable.mage_g
+                    "마법사(남)"->R.drawable.mage_m
+                    "프리스트(남)"-> R.drawable.prist_m
+                    "프리스트(여)"-> R.drawable.prist_g
+                    "격투가(남)"->R.drawable.fighter_m
+                    "격투가(여)"->R.drawable.fighter_g
+                    "나이트"->R.drawable.knight
+                    "도적"->R.drawable.theif
+                    "다크나이트"->R.drawable.darknight
+                    "크리에이터"->R.drawable.creature
+                    "아처"->R.drawable.archer
+                    "마창사"->R.drawable.lancer
+                    "총검사"->R.drawable.gunblade
+                    else -> R.drawable.defalut // 기본 이미지 설정
+                }
+
                 Image(
-                    painter = painterResource(id = R.drawable.knight),
+                    painter = painterResource(id = imageResource),
                     contentDescription = "",
                     modifier = Modifier.padding(
                         start = 20.dp,
@@ -283,14 +285,6 @@ class MainActivity : AppCompatActivity() {
                     textAlign = TextAlign.Center,
                     text = characterName + " / " + "Lv" +characterLevel + " / " + jobGrowName
                     )
-                Text(
-                    modifier = Modifier.padding(
-                        start = 300.dp,
-                        top = 12.dp
-                    ),
-                    textAlign = TextAlign.Center,
-                    text = serverId
-                )
             }
         }
 
