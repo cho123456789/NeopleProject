@@ -23,4 +23,6 @@ data class Character (
     var fame : Int,
     @SerializedName("adventureName")
     var adventureName : String,
+    @SerializedName("reinforce")
+    var reinforce : Int
 )

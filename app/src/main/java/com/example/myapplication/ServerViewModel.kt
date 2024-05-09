@@ -76,6 +76,9 @@ class ServerViewModel(
     private val _slotName = MutableStateFlow("")
     val slotName: StateFlow<String> = _slotName
 
+    private val _reinforce = MutableStateFlow(0)
+    val reinforce: StateFlow<Int> = _reinforce
+
     private val _itemType = MutableStateFlow("")
     val itemType: StateFlow<String> = _itemType
 
@@ -153,6 +156,7 @@ class ServerViewModel(
                 _adventureName.value = characterResponse.adventureName
                 _level.value = characterResponse.level
                 _jobName.value = characterResponse.jobName
+                _reinforce.value = characterResponse.reinforce
             } else {
 
             }
