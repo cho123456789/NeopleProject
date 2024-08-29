@@ -52,9 +52,13 @@ class CharacterInfoViewModel @Inject constructor(
                     val characterResponse = resource.data
                     val servers = characterResponse?.charactItem
                     val characterIds = servers?.map { it.characterId }
+                    Log.d("viewmodel", characterIds.toString())
                     val characterName = servers?.map { it.characterName}
                     if(characterIds != null) {_characterId.value = characterIds}
                     if(characterName != null){ _characterName.value = characterName }
+
+
+
                 }
                 is Resource.Error -> {
                     CharacterListState(

@@ -1,6 +1,7 @@
 package com.example.myapplication.ui
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.CharacterImageViewModel
@@ -45,11 +48,12 @@ fun CharacterSearchScreen(
     val profileImg by viewModelImage.imageBitmap.collectAsState()
 
 
-    val characterId =  characterIds.joinToString()
     val characterName = characterNameIds
     val jobGrowName = jobGrowNameIds
     val GuildName = GuildNameIds
     val adventureName = adventureNameIds
+    val characterId = characterIds.joinToString()
+
 
 
     var inputCharacterId by remember { mutableStateOf("") }
@@ -79,20 +83,23 @@ fun CharacterSearchScreen(
             onValueChange = { inputServerId = it },
             label = { Text("Server ID") },
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
-        )
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
-                viewModel.getCharacterInfo(inputServerId, inputCharacterId)
+                    getServerIdById(inputServerId)?.let { viewModel.getCharacterInfo(it, inputCharacterId) }
+//                    Log.d("Screen1",serverId + inputCharacterId)
+
             },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Search")
-            viewModelSetting.getCharacterSetting(inputServerId,characterId)
-            viewModelImage.getCharacterImage(inputServerId,characterId)
+            getServerIdById(inputServerId)?.let { viewModelSetting.getCharacterSetting(it,characterId) }
+            getServerIdById(inputServerId)?.let { viewModelImage.getCharacterImage(it,characterId) }
         }
         Spacer(modifier = Modifier.height(10.dp))
         profileImg?.let {

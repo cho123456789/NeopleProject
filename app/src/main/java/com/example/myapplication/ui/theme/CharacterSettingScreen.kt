@@ -149,7 +149,7 @@ fun CharacterStats(
         Spacer(modifier = Modifier.height(5.dp))
 
         Text(
-            text = characterName + " | " +  getServerNameById(characterSever),
+            text = characterName + " | " +  characterSever,
             color = Color.Black,
             style = MaterialTheme.typography.bodyMedium
         )
