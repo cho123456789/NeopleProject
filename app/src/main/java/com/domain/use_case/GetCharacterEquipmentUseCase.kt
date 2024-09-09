@@ -7,24 +7,26 @@ import androidx.annotation.RequiresExtension
 import com.common.Constants.API_KEY
 import com.common.Resource
 import com.data.remote.dto.CharacterInfoDto
+import com.data.remote.dto.EquipmentDto
+import com.domain.respository.CharacterEquipmentRepository
 import com.domain.respository.CharacterSettingRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
 import javax.inject.Inject
 
-class GetCharacterSettingUseCase @Inject constructor(
-    private val repository: CharacterSettingRepository
+class GetCharacterEquipmentUseCase @Inject constructor(
+    private val repository: CharacterEquipmentRepository
 ) {
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    operator fun invoke(serverId: String, characterId: String): Flow<Resource<CharacterInfoDto>> =
+    operator fun invoke(serverId: String, characterId: String): Flow<Resource<EquipmentDto>> =
         flow {
             emit(Resource.Loading())
             try {
                 // Fetch the response from the repository
-                val response = repository.getCharacterSetting(serverId, characterId, API_KEY)
+                val response = repository.getEquipment(serverId, characterId, API_KEY)
                 // Log the raw JSON response
-                //Log.d("API Response", response.raw().toString())
+                Log.d("API Response", response.raw().toString())
 
                 // Check if the response is successful
                 if (response.isSuccessful) {
@@ -43,5 +45,5 @@ class GetCharacterSettingUseCase @Inject constructor(
             } catch (e: IOException) {
                 emit(Resource.Error("Code error"))
             }
-        }
+    }
 }

@@ -1,9 +1,6 @@
-package com.example.myapplication.ui.theme
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,44 +10,70 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.R
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.ui.theme.EquipmentScreen
 
 @Composable
 fun CharacterSettingScreen(
     adventureName: String,
-    characterName : String,
+    characterName: String,
     characterSever: String,
-    jobGrowName : String,
-    GuildName : String,
-    ImageProfile : ImageBitmap
+    jobGrowName: String,
+    GuildName: String,
+    ImageProfile: ImageBitmap
+) {
+    val navController = rememberNavController()
+
+    // NavHost 설정, 화면 간 경로(route)를 정의합니다.
+    NavHost(navController = navController, startDestination = "home") {
+        composable("home") {
+            // Home 화면은 현재 CharacterSettingScreen의 내용입니다.
+            HomeScreen(
+                navController,
+                adventureName,
+                characterName,
+                characterSever,
+                jobGrowName,
+                GuildName,
+                ImageProfile
+            )
+        }
+    }
+}
+
+@Composable
+fun HomeScreen(
+    navController: NavHostController,
+    adventureName: String,
+    characterName: String,
+    characterSever: String,
+    jobGrowName: String,
+    GuildName: String,
+    ImageProfile: ImageBitmap
 ) {
     Box(
         modifier = Modifier
-            .padding(5.dp)
-            .width(200.dp) // 너비 조절
-            .height(350.dp) // 높이 조절
+            .padding(10.dp)
+            .fillMaxWidth()
             .background(Color.White)
     ) {
-        Column(
+        Row(
             modifier = Modifier,
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+            verticalAlignment = Alignment.CenterVertically
+//            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Gear grid around the character
-            //GearGrid()
-
             Spacer(modifier = Modifier.height(10.dp))
 
             // Character Image
@@ -70,70 +93,24 @@ fun CharacterSettingScreen(
     }
 }
 
-@Composable
-fun GearGrid() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(5.dp)
-            .background(Color.White)
-    ) {
-        // Define your grid layout here, example using a 3x3 grid
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column {
-                // Top left gear
-                GearIcon(R.drawable.gear_placeholder)
-                Spacer(modifier = Modifier.height(8.dp))
-            }
 
-            Column {
-                // Top right gear
-                GearIcon(R.drawable.gear_placeholder)
-                Spacer(modifier = Modifier.height(8.dp))
-                // Right middle gear
-                GearIconWithBorder(R.drawable.gear_placeholder)
-            }
-        }
-    }
-}
-
+// 다른 함수들 - CharacterImage, CharacterStats
 @Composable
-fun GearIcon(resourceId: Int) {
-    Image(
-        painter = painterResource(id = resourceId),
-        contentDescription = null,
-        modifier = Modifier.size(480.dp)
-    )
-    Spacer(modifier = Modifier.height(16.dp)) // 이미지 아래 공간 추가
-}
-
-@Composable
-fun CharacterImage(
-    ImageProfile: ImageBitmap
-) {
-    Image(
-        painter = BitmapPainter(ImageProfile),
-        contentDescription = "Character Image",
-        modifier = Modifier
-            .size(200.dp)
-            .padding(top = 0.dp) // 상단 padding을 0으로 설정하여 상단에 배치
-            .fillMaxWidth() // 전체 너비에 맞게 이미지 크기 조정
-    )
+fun CharacterImage(ImageProfile: ImageBitmap) {
+    Image(bitmap = ImageProfile, contentDescription = null)
 }
 
 @Composable
 fun CharacterStats(
-    adventureName : String,
-    characterName : String,
+    adventureName: String,
+    characterName: String,
     characterSever: String,
-    jobGrowName : String,
-    GuildName : String
+    jobGrowName: String,
+    GuildName: String
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier
+            .padding(0.dp)
     ) {
         Text(
             text = adventureName,
@@ -149,7 +126,7 @@ fun CharacterStats(
         Spacer(modifier = Modifier.height(5.dp))
 
         Text(
-            text = characterName + " | " +  characterSever,
+            text = characterName + " | " + characterSever,
             color = Color.Black,
             style = MaterialTheme.typography.bodyMedium
         )
@@ -163,6 +140,8 @@ fun CharacterStats(
         )
     }
 }
+
+
 @Composable
 fun GearIconWithBorder(resourceId: Int) {
     Box(
@@ -179,6 +158,7 @@ fun GearIconWithBorder(resourceId: Int) {
         )
     }
 }
+
 fun getServerNameById(serverId: String): String? {
     val serverMap = mapOf(
         "cain" to "카인",

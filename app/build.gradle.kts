@@ -57,6 +57,7 @@ android {
 
 dependencies {
     implementation("com.google.dagger:hilt-android:2.48")
+    implementation(libs.androidx.benchmark.macro)
     kapt("com.google.dagger:hilt-compiler:2.48")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

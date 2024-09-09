@@ -30,11 +30,11 @@ interface NeopleApiService {
         @Path("characterId") characterId: String,
         @Query("apikey") apiKey: String
     ): Response<CharacterInfoDto>
-//
-//    @GET("df/servers/{serverId}/characters/{characterId}/equip/equipment")
-//    suspend fun getEquipment(
-//        @Path("serverId") serverId: String,
-//        @Path("characterId") characterId: String,
-//        @Query("apikey") apiKey: String,
-//    ): Response<EquipmentDto>
+
+    @GET("df/servers/{serverId}/characters/{characterId}/equip/equipment")
+    suspend fun getEquipment(
+        @Path("serverId") serverId: String,
+        @Path("characterId") characterId: String,
+        @Query("apikey") apiKey: String,
+    ): Response<EquipmentDto>
 }

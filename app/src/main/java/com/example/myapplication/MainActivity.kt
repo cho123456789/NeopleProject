@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.myapplication.ui.CharacterSearchScreen
+import com.example.myapplication.ui.theme.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     @Composable
     fun MyApp() {
-        CharacterSearchScreen()
+        MainScreen()
     }
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Preview(showBackground = true)

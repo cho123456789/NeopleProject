@@ -27,12 +27,12 @@ class GetCharacterImageUseCase @Inject constructor(
                 // Fetch the response from the repository
                 val response = repository.getCharacterImage(serverId, characterId, zoom)
                 // Log the raw JSON response
-                Log.d("API Response", response.raw().toString())
+                //Log.d("API Response", response.raw().toString())
 
                 // Check if the response is successful
                 if (response.isSuccessful) {
                     val info = response.body()
-                    Log.d("Parsed Response", info.toString()) // 로그에 파싱된 데이터 출력
+                    //Log.d("Parsed Response", info.toString()) // 로그에 파싱된 데이터 출력
                     if (info != null) {
                         emit(Resource.Success(info))
                     } else {
