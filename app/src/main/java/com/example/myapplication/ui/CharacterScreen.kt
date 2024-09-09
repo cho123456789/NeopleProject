@@ -1,9 +1,11 @@
 package com.example.myapplication.ui
 
+import CharacterSettingScreen
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,21 +28,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.CharacterEquipmentViewModel
 import com.example.myapplication.CharacterImageViewModel
 import com.example.myapplication.CharacterInfoViewModel
 import com.example.myapplication.CharacterSettingViewModel
-import com.example.myapplication.ui.theme.CharacterSettingScreen
+import com.example.myapplication.ui.theme.EquipmentScreen
+import com.google.gson.Gson
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun CharacterSearchScreen(
+    navController: NavController,
     viewModel: CharacterInfoViewModel = hiltViewModel(),
     viewModelSetting: CharacterSettingViewModel = hiltViewModel(),
-    viewModelImage: CharacterImageViewModel = hiltViewModel()
+    viewModelImage: CharacterImageViewModel = hiltViewModel(),
+    viewModelEquipment: CharacterEquipmentViewModel = hiltViewModel()
 ) {
     //val characterId by viewModel.character.collectAsState()
 
     val characterIds by viewModel.characterId.collectAsState(initial = emptyList())
+    val equipment by viewModelEquipment.equipment.collectAsState(initial = emptyList())
     val jobGrowNameIds by viewModelSetting.jobGrowName.collectAsState()
     val GuildNameIds by viewModelSetting.guildName.collectAsState()
     val characterNameIds by viewModelSetting.characterName.collectAsState()
@@ -54,10 +67,9 @@ fun CharacterSearchScreen(
     val adventureName = adventureNameIds
     val characterId = characterIds.joinToString()
 
-
-
     var inputCharacterId by remember { mutableStateOf("") }
     var inputServerId by remember { mutableStateOf("") }
+
 
     Column(
         modifier = Modifier
@@ -93,13 +105,13 @@ fun CharacterSearchScreen(
             onClick = {
                     getServerIdById(inputServerId)?.let { viewModel.getCharacterInfo(it, inputCharacterId) }
 //                    Log.d("Screen1",serverId + inputCharacterId)
-
             },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Search")
             getServerIdById(inputServerId)?.let { viewModelSetting.getCharacterSetting(it,characterId) }
             getServerIdById(inputServerId)?.let { viewModelImage.getCharacterImage(it,characterId) }
+            getServerIdById(inputServerId)?.let { viewModelEquipment.getCharacterEquipment(it,characterId) }
         }
         Spacer(modifier = Modifier.height(10.dp))
         profileImg?.let {
@@ -111,6 +123,22 @@ fun CharacterSearchScreen(
                 GuildName,
                 it
             )
+        }
+        Box(
+            modifier = Modifier
+                .padding(10.dp)  // 상단에 약간의 간격 추가
+        ){
+            Button(
+                onClick = {
+                    Log.d("Equiment",equipment.toString())
+                    val equipmentListJson = Gson().toJson(equipment)
+                    val encodedEquipmentListJson = URLEncoder.encode(equipmentListJson, StandardCharsets.UTF_8.toString())
+                    // "equipment" 경로로 이동
+                    navController.navigate("equipment/$encodedEquipmentListJson")
+                },
+            ) {
+                Text("장착장비")
+            }
         }
     }
 }
