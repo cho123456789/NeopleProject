@@ -1,209 +1,424 @@
 package com.example.myapplication.ui.theme
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.data.remote.dto.Enchant
 import com.data.remote.dto.Item
+import com.data.remote.dto.SetItem
+import com.data.remote.dto.SirocoInfo
+import com.data.remote.dto.SirocoOption
+import com.data.remote.dto.Status
+import com.data.remote.dto.TransformInfo
+import com.data.remote.dto.UpgradeInfo
 
 @Composable
 fun EquipmentScreen(
     equipmentList: List<Item>
 ) {
-    var selectedTabIndex by remember { mutableStateOf(0) }
-    val tabTitles = listOf("장착장비", "버프강화", "크리쳐")
+    Log.d("EquipmentScreen", equipmentList.toString())
+    val weaponItems = equipmentList.filter { it.slotName == "무기" }
+    val styleItems = equipmentList.filter { it.slotName == "칭호" }
+    val subItems = equipmentList.filter { it.slotName == "보조무기" }
+    val shoulderItems = equipmentList.filter { it.slotName == "머리어깨" }
+    val upperBodyItems = equipmentList.filter { it.slotName == "상의" }
+    val lowerBodyItems = equipmentList.filter { it.slotName == "하의" }
+    val beltItems = equipmentList.filter { it.slotName == "벨트" }
+    val shoesBodyItems = equipmentList.filter { it.slotName == "신발" }
+    val braceletItems = equipmentList.filter { it.slotName == "팔찌" }
+    val necklaceItems = equipmentList.filter { it.slotName == "목걸이" }
+    val ringItems = equipmentList.filter { it.slotName == "반지" }
+    val AuxItems = equipmentList.filter { it.slotName == "보조장비" }
+    val ManaItems = equipmentList.filter { it.slotName == "마법석" }
+    val earringItems = equipmentList.filter { it.slotName == "귀걸이" }
 
-    // 각 탭에 해당하는 장비 목록 필터링 (탭에 따라 다르게 보여줄 데이터)
-    val filteredList = when (selectedTabIndex) {
-        0 -> equipmentList // All 탭일 경우 전체 리스트
-//        1 -> equipmentList.filter { it.contains("Weapon") } // Weapons 탭일 경우 필터링
-//        2 -> equipmentList.filter { it.name.contains("Armor") } // Armor 탭일 경우 필터링
-        else -> emptyList()
+    LazyColumn {
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "무기",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+        items(weaponItems) { item ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+            ) {
+                ItemCard(item)
+            }
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
+        item {
+            Text(
+                text = "칭호",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        items(styleItems) { item ->
+            ItemCard(item)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
+        item {
+            Text(
+                text = "보조무기",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        items(subItems) { item ->
+            ItemCard(item)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
+        item {
+            Text(
+                text = "머리어깨",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        items(shoulderItems) { item ->
+            ItemCard(item)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
+
+        item {
+            Text(
+                text = "상의",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+
+        items(upperBodyItems) { item ->
+            ItemCard(item)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
+        item {
+            Text(
+                text = "하의",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        items(lowerBodyItems) { item ->
+            ItemCard(item)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
+
+        item {
+            Text(
+                text = "벨트",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        items(beltItems) { item ->
+            ItemCard(item)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
+        item {
+            Text(
+                text = "신발",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        items(shoesBodyItems) { item ->
+            ItemCard(item)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
+        item {
+            Text(
+                text = "팔찌",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        items(braceletItems) { item ->
+            ItemCard(item)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
+        item {
+            Text(
+                text = "목걸이",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        items(necklaceItems) { item ->
+            ItemCard(item)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
+        item {
+            Text(
+                text = "반지",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        items(ringItems) { item ->
+            ItemCard(item)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
+        item {
+            Text(
+                text = "보조장비",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        items(AuxItems) { item ->
+            ItemCard(item)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
+        item {
+            Text(
+                text = "마법석",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        items(ManaItems) { item ->
+            ItemCard(item)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
+        item {
+            Text(
+                text = "귀걸이",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+        items(earringItems) { item ->
+            ItemCard(item)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+        }
     }
-    Scaffold(
-        topBar = {
-            Column {
-                // 상단 탭 네비게이션
-                TabRow(
-                    selectedTabIndex = selectedTabIndex,
-                    modifier = Modifier.padding(8.dp)
+}
+
+@Composable
+fun ItemCard(item: Item) {
+    Column(
+        modifier = Modifier.padding(10.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween // 아이템을 양쪽 끝으로 정렬
+        ) {
+            Column(
+                horizontalAlignment = Alignment.Start // 왼쪽 정렬
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp)
                 ) {
-                    tabTitles.forEachIndexed { index, title ->
-                        Tab(
-                            text = { Text(title) },
-                            selected = selectedTabIndex == index,
-                            onClick = { selectedTabIndex = index }
+                    Text(
+                        text = removePlusSign(item.itemName),
+                        fontWeight = FontWeight.Bold,
+                        color = NameYellow,
+                    )
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.End // 오른쪽 정렬
+                    ) {
+                        if (item.slotName == "칭호" || item.slotName == "보조무기") {
+                            Text(
+                                text = "",
+                            )
+                        } else {
+                            if (item.amplificationName == null) {
+                                Text(
+                                    text = "+${item.reinforce}강화/(${item.refine})",
+                                )
+                            } else {
+                                Text(
+                                    text = "+${item.reinforce}증폭",
+                                    color = PurpleBink,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+                    }
+                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp)
+                )
+                {
+                    item.upgradeInfo?.let { upgradeInfo ->
+                        Spacer(modifier = Modifier.height(1.dp))
+                        Text(
+                            text = "ㄴ ${removePlusSign(upgradeInfo.itemName)}",
+                            color = NameYellow
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                    }
+
+                    item.enchant?.let { enchant ->
+                        enchant.explain?.let { explain ->
+                            Text(text = removePlusSign(enchant.explain))
+                        }
+                        Text(
+                            text = enchant.status.joinToString(", ") { removePlusSign("${(it.name)}: ${it.value}") },
+                            fontSize = 15.sp
                         )
                     }
                 }
             }
         }
-    ) { innerPadding ->
-        // LazyColumn을 사용하여 필터링된 장비 목록 표시
-        Log.d("EquipmentScreen", filteredList.toString())
-        LazyColumn(modifier = Modifier.padding(innerPadding)) {
-            items(filteredList) { item ->
-                ItemCard(item)
-            }
-        }
+
     }
 }
 
 
+fun removePlusSign(text: String): String {
+    return text.replace("+", " ")
+}
+
+@Preview(showBackground = true)
 @Composable
-fun ItemCard(item: Item) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .background(Color.White)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp)
-            )
-            {
-                Text(
-                    text = "무기",
-                    color = Color.Black,  // Gold color
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp
+internal fun PreviewMainContainer() {
+    // 더미 데이터 생성
+    val sampleItems = listOf(
+        Item(
+            itemName = "+Aegis+ Shield+",
+            slotName = "Shield",
+            itemType = "Defense",
+            itemAvailableLevel = 8,
+            itemRarity = "Rare",
+            itemGradeName = "B",
+            reinforce = 3,
+            refine = 2,
+            enchant = Enchant(
+                explain = "12",
+                status = listOf(
+                    Status(
+                        name = "123",
+                        value = 12
+                    )
                 )
-                ItemWeapon(item = item)
-            }
-            HorizontalDivider(thickness = 2.dp, color = Color.LightGray)
-
-            // Weapon Section
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Sub-Weapon Section
-            Text(
-                text = "보조무기",
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
-            HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
-            //ItemDetails(item = item)
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Head/Shoulder Section
-            Text(
-                text = "머리어깨",
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
-            )
-            HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
-            //ItemDetails(item = item)
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Top Section
-            Text(
-                text = "상의",
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
-            )
-            HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
-            //ItemDetails(item = item)
-        }
-    }
-}
-
-@Composable
-fun ItemWeapon(item: Item) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                top=5.dp,
-                start=10.dp,
-                end=10.dp,
-                bottom = 5.dp
             ),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = item.itemName ?: "Unknown",
-            fontWeight = FontWeight.Bold,
-            color = Color(0xFFFFB139),
-            fontSize = 15.sp
-        )
+            amplificationName = "",
+            itemId = "",
+            itemTypeDetail = "",
+            itemTypeDetailId = "",
+            itemTypeId = "",
+            setItem = SetItem(
+                setItemId = "Dragon Set",
+                setItemName = "Fire Damage +10%"
+            ),
+            sirocoInfo = SirocoInfo(
+                options = listOf(
+                    SirocoOption(
+                        explain = "Attack Speed Increase",
+                        explainDetail = "Increases attack speed by 20%",
+                        buffExplain = "Attack Speed",
+                        buffExplainDetail = "Increases attack speed by 20%."
+                    ),
+                    SirocoOption(
+                        explain = "Critical Hit Chance",
+                        explainDetail = "Increases critical hit chance by 15%",
+                        buffExplain = "Critical Hit Chance",
+                        buffExplainDetail = "Increases critical hit chance by 15%."
+                    )
+                )
+            ),
+            slotId = "",
+            upgradeInfo = UpgradeInfo(
+                itemId = "",
+                itemName = ""
+            ),
+            transformInfo = TransformInfo(
+                explain = "",
+                explainDetail = "",
+                optionType = "",
+                active = true
+            )
+        ),
+        Item(
+            itemName = "Aegis Shield",
+            slotName = "Shield",
+            itemType = "Defense",
+            itemAvailableLevel = 8,
+            itemRarity = "Rare",
+            itemGradeName = "B",
+            reinforce = 3,
+            refine = 2,
+            enchant = null,
+            amplificationName = "",
+            itemId = "",
+            itemTypeDetail = "",
+            itemTypeDetailId = "",
+            itemTypeId = "",
+            setItem = SetItem(
+                setItemId = "Dragon Set",
+                setItemName = "Fire Damage +10%"
+            ),
+            sirocoInfo = SirocoInfo(
+                options = listOf(
+                    SirocoOption(
+                        explain = "Attack Speed Increase",
+                        explainDetail = "Increases attack speed by 20%",
+                        buffExplain = "Attack Speed",
+                        buffExplainDetail = "Increases attack speed by 20%."
+                    ),
+                    SirocoOption(
+                        explain = "Critical Hit Chance",
+                        explainDetail = "Increases critical hit chance by 15%",
+                        buffExplain = "Critical Hit Chance",
+                        buffExplainDetail = "Increases critical hit chance by 15%."
+                    )
+                )
+            ),
+            slotId = "",
+            upgradeInfo = UpgradeInfo(
+                itemId = "",
+                itemName = ""
+            ),
+            transformInfo = TransformInfo(
+                explain = "",
+                explainDetail = "",
+                optionType = "",
+                active = true
+            ),
+
+            )
+    )
+    // Preview with the sample data
+    MaterialTheme {
+        EquipmentScreen(equipmentList = sampleItems)
     }
 }
-
-@Composable
-fun ItemDetails(item: Item) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = "Item Name:", fontWeight = FontWeight.Bold)
-            Text(text = "Slot:")
-            Text(text = "Type:")
-            Text(text = "Available Level:")
-            Text(text = "Rarity:")
-            Text(text = "Grade:")
-            Text(text = "Reinforce:")
-            Text(text = "Refine:")
-            item.enchant?.let {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Enchant:", color = Color.Gray)  // Enchant text in gray
-            }
-        }
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = item.itemName ?: "Unknown", fontWeight = FontWeight.Bold)
-            Text(text = item.slotName ?: "Unknown")
-            Text(text = item.itemType ?: "Unknown")
-            Text(text = item.itemAvailableLevel?.toString() ?: "Unknown")
-            Text(text = item.itemRarity ?: "Unknown")
-            Text(text = item.itemGradeName ?: "Unknown")
-            Text(text = item.reinforce?.toString() ?: "Unknown")
-            Text(text = item.refine?.toString() ?: "Unknown")
-
-            item.enchant?.let { enchant ->
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = enchant.explain ?: "None", color = Color.Gray)  // Enchant text in gray
-                enchant.status.forEach { status ->
-                    Text(text = "  ${status.name}: ${status.value}", color = Color.Gray)
-                }
-            }
-        }
-    }
-}
-
