@@ -1,4 +1,4 @@
-## DNF 캐릭터 정보 조회 (토이 프로젝트)
+## DNF 캐릭터 정보 조회 (토이 프로젝트) (진행중) 
 
 
 ## 프로젝트 소개
@@ -8,3 +8,7 @@
 ## 개발 환경:
 - Front : Android Studio Kotlin
 - API : https://developers.neople.co.kr/
+
+## 참고 사이트
+- 던담 : https://dundam.xyz/
+- 던파캣 : https://dfcat.net/
