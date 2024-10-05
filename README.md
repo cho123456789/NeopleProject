@@ -20,3 +20,28 @@
 
 ##  캐릭터 장비 출력 
 
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/9c27af14-1949-4b66-936e-13d8a27ee09c" alt="splash" width="300"/></td>
+    <td>
+      <h3>캐릭터 검색</h3>
+      <ul>
+        <li>캐릭터 이름 및 서버 입력</li>
+        <li>검색을 버튼으로 캐릭터의 정보를 불러옵니다.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/bb653a77-6560-4ce2-bf5e-e371242e1108" alt="splash" width="300"/></td>
+    <td>
+      <h3>캐릭터 장비 정보</h3>
+      <ul>
+        <li>캐릭터 장비 조회</li>
+        <li>검색을 버튼으로 캐릭터의 장비를 불러옵니다.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
