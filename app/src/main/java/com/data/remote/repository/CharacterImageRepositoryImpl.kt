@@ -1,18 +1,13 @@
 package com.data.remote.repository
 
-import com.data.remote.NeopleApiImageService
-import com.data.remote.NeopleApiService
-import com.data.remote.dto.CharacterInfoDto
+import com.data.remote.NeoplelmageService
 import com.domain.respository.CharacterImageRepository
-import com.domain.respository.CharacterInfoRepository
-import com.domain.respository.CharacterSettingRepository
-import com.example.myapplication.network.CharacterResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
 import javax.inject.Inject
 
 class CharacterImageRepositoryImpl @Inject constructor(
-    private val api : NeopleApiImageService,
+    private val api : NeoplelmageService,
 ) : CharacterImageRepository {
     override suspend fun getCharacterImage(
         serverId: String,

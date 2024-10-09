@@ -1,6 +1,6 @@
 package com.data.remote.dto.di
 
-import com.data.remote.NeopleApiImageService
+import com.data.remote.NeoplelmageService
 import com.data.remote.NeopleApiService
 import dagger.Module
 import dagger.Provides
@@ -25,11 +25,11 @@ class AppModule {
     }
 
     @Provides
-    fun provideNeopleApiServiceImg(): NeopleApiImageService {
+    fun provideNeopleApiServiceImg(): NeoplelmageService {
         return Retrofit.Builder()
             .baseUrl("https://img-api.neople.co.kr/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(NeopleApiImageService::class.java)
+            .create(NeoplelmageService::class.java)
     }
 }

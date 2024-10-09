@@ -1,8 +1,6 @@
 package com.domain.model
 
-import com.google.gson.annotations.SerializedName
-
-data class characterItem(
+data class characterDto(
     val serverId: String? = null,
     val characterId: String,
     val characterName: String,

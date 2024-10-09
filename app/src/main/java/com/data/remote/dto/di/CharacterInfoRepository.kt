@@ -1,6 +1,6 @@
 package com.data.remote.dto.di
 
-import com.data.remote.NeopleApiImageService
+import com.data.remote.NeoplelmageService
 import com.data.remote.NeopleApiService
 import com.data.remote.repository.CharacterEquipmentRepositorylmpl
 import com.data.remote.repository.CharacterImageRepositoryImpl
@@ -37,7 +37,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideCharacterImageRepository(api : NeopleApiImageService): CharacterImageRepository {
+    fun provideCharacterImageRepository(api : NeoplelmageService): CharacterImageRepository {
         return CharacterImageRepositoryImpl(api)
     }
 

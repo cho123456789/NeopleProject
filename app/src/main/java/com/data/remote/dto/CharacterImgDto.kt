@@ -1,7 +1,6 @@
 package com.data.remote.dto
 
 import com.domain.model.ImageDto
-import com.domain.model.characterItem
 import com.google.gson.annotations.SerializedName
 
 data class CharacterImgDto (

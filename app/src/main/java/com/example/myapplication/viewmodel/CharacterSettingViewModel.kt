@@ -1,17 +1,10 @@
-package com.example.myapplication
+package com.example.myapplication.viewmodel
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresExtension
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.common.Resource
-import com.data.remote.NeopleApiService
-import com.data.remote.dto.CharacterResponse
-import com.domain.model.characterItem
-import com.domain.use_case.GetCharacterInfoUseCase
 import com.domain.use_case.GetCharacterSettingUseCase
 import com.presentation.CharacterListState
 import dagger.hilt.android.lifecycle.HiltViewModel

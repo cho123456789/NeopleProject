@@ -14,9 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,22 +26,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.CharacterEquipmentViewModel
-import com.example.myapplication.CharacterImageViewModel
-import com.example.myapplication.CharacterInfoViewModel
-import com.example.myapplication.CharacterSettingViewModel
-import com.example.myapplication.ui.theme.EquipmentScreen
+import com.example.myapplication.viewmodel.CharacterEquipmentViewModel
+import com.example.myapplication.viewmodel.CharacterImageViewModel
+import com.example.myapplication.viewmodel.CharacterInfoViewModel
+import com.example.myapplication.viewmodel.CharacterSettingViewModel
 import com.google.gson.Gson
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
+@OptIn(ExperimentalMaterial3Api::class)
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun CharacterSearchScreen(
@@ -97,7 +96,7 @@ fun CharacterSearchScreen(
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            )
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
