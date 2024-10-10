@@ -5,11 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.dto.CharacterDto
-import com.example.dao.CharacterDao
 
 @Database(entities = [CharacterDto::class],version= 1, exportSchema = false)
 abstract class characterDatabase : RoomDatabase() {
-    abstract fun characterDao(): CharacterDao
 
     companion object {
         @Volatile
