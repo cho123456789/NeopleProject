@@ -13,7 +13,7 @@ import retrofit2.Response
 
 class ApiService : AppCompatActivity() {
 
-    private val API_KEY = "tqUtxGZX3aszriKokC1rUj4FWuR0ndi9"
+    private val API_KEY = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
