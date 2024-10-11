@@ -56,11 +56,12 @@ android {
 }
 
 dependencies {
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-compiler:2.48")
-    implementation ("androidx.navigation:navigation-compose:2.5.3")
-    implementation ("androidx.compose.ui:ui:1.4.3")
-    implementation ("androidx.compose.material:material:1.4.3")
+    //implementation("com.google.dagger:hilt-android:2.48")
+    implementation(libs.hilt.dagger)
+    kapt(libs.dagger.hilt.compiler)
+    implementation (libs.androidx.navigation.compose.v253)
+    implementation (libs.androidx.ui)
+    implementation (libs.androidx.material)
 
     implementation(libs.androidx.material3)
     implementation(libs.androidx.core.ktx)
@@ -73,10 +74,9 @@ dependencies {
     implementation(libs.androidx.room)
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.liveData)
-    kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.appcompat)
-    implementation("androidx.compose.material3:material3:1.2.1")
+    implementation(libs.material3)
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
