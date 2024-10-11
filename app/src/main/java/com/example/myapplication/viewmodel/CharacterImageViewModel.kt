@@ -1,29 +1,20 @@
-package com.example.myapplication
+package com.example.myapplication.viewmodel
 
 import android.graphics.BitmapFactory
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresExtension
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.common.Resource
-import com.data.remote.NeopleApiService
-import com.data.remote.dto.CharacterResponse
-import com.domain.model.characterItem
 import com.domain.use_case.GetCharacterImageUseCase
-import com.domain.use_case.GetCharacterInfoUseCase
 import com.presentation.CharacterListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.io.InputStream
 import javax.inject.Inject
 
 @HiltViewModel

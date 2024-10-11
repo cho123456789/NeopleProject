@@ -13,11 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.data.remote.dto.Enchant
 import com.data.remote.dto.Item
 import com.data.remote.dto.SetItem
@@ -37,6 +37,7 @@ import com.data.remote.dto.UpgradeInfo
 
 @Composable
 fun EquipmentScreen(
+    navController: NavController,
     equipmentList: List<Item>
 ) {
     Log.d("EquipmentScreen", equipmentList.toString())
@@ -64,7 +65,7 @@ fun EquipmentScreen(
             ) {
                 Text(
                     text = "무기",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.h2
                 )
             }
         }
@@ -76,154 +77,197 @@ fun EquipmentScreen(
             ) {
                 ItemCard(item)
             }
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )
         }
         item {
             Text(
                 text = "칭호",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(16.dp)
             )
         }
         items(styleItems) { item ->
             ItemCard(item)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
-        }
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )        }
         item {
             Text(
                 text = "보조무기",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(16.dp)
             )
         }
         items(subItems) { item ->
             ItemCard(item)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
-        }
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )        }
         item {
             Text(
                 text = "머리어깨",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(16.dp)
             )
         }
         items(shoulderItems) { item ->
             ItemCard(item)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
-        }
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )        }
 
         item {
             Text(
                 text = "상의",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(16.dp)
             )
         }
 
         items(upperBodyItems) { item ->
             ItemCard(item)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
-        }
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )        }
         item {
             Text(
                 text = "하의",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(16.dp)
             )
         }
         items(lowerBodyItems) { item ->
             ItemCard(item)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
-        }
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )        }
 
         item {
             Text(
                 text = "벨트",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(16.dp)
             )
         }
         items(beltItems) { item ->
             ItemCard(item)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
-        }
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )        }
         item {
             Text(
                 text = "신발",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(16.dp)
             )
         }
         items(shoesBodyItems) { item ->
             ItemCard(item)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
-        }
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )        }
         item {
             Text(
                 text = "팔찌",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(16.dp)
             )
         }
         items(braceletItems) { item ->
             ItemCard(item)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
-        }
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )        }
         item {
             Text(
                 text = "목걸이",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(16.dp)
             )
         }
         items(necklaceItems) { item ->
             ItemCard(item)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
-        }
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )        }
         item {
             Text(
                 text = "반지",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(16.dp)
             )
         }
         items(ringItems) { item ->
             ItemCard(item)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
-        }
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )        }
         item {
             Text(
                 text = "보조장비",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(16.dp)
             )
         }
         items(AuxItems) { item ->
             ItemCard(item)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
-        }
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )        }
         item {
             Text(
                 text = "마법석",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(16.dp)
             )
         }
         items(ManaItems) { item ->
             ItemCard(item)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
-        }
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )        }
         item {
             Text(
                 text = "귀걸이",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(16.dp)
             )
         }
         items(earringItems) { item ->
             ItemCard(item)
-            HorizontalDivider(modifier = Modifier.padding(vertical = 5.dp))
-        }
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp),
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                thickness = 1.dp // 두께 조절
+            )        }
     }
 }
 
@@ -311,6 +355,7 @@ fun removePlusSign(text: String): String {
 @Preview(showBackground = true)
 @Composable
 internal fun PreviewMainContainer() {
+    val navController = rememberNavController()
     // 더미 데이터 생성
     val sampleItems = listOf(
         Item(
@@ -419,6 +464,6 @@ internal fun PreviewMainContainer() {
     )
     // Preview with the sample data
     MaterialTheme {
-        EquipmentScreen(equipmentList = sampleItems)
+        EquipmentScreen(equipmentList = sampleItems, navController = navController)
     }
 }

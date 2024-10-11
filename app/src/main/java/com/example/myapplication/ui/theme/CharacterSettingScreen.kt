@@ -10,8 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
@@ -115,20 +116,20 @@ fun CharacterStats(
         Text(
             text = adventureName,
             color = Color.Blue,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.h2
         )
         Spacer(modifier = Modifier.height(5.dp))
         Text(
             text = jobGrowName,
             color = Color.Black,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.h2
         )
         Spacer(modifier = Modifier.height(5.dp))
 
         Text(
             text = characterName + " | " + characterSever,
             color = Color.Black,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.h2
         )
 
         Spacer(modifier = Modifier.height(5.dp))
@@ -136,7 +137,7 @@ fun CharacterStats(
         Text(
             text = "[" + GuildName + "]",
             color = Color.Black,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.h2
         )
     }
 }

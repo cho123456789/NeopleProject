@@ -10,13 +10,6 @@ import retrofit2.http.Query
 
 interface NeopleApiService {
 
-    @GET("df/servers/{serverId}/characters/{characterId}")
-    suspend fun getCharacterImage(
-        @Path("serverId") serverId: String,
-        @Path("characterId") characterId: String,
-        @Query("zoom") zoom: Int
-    ): Response<ResponseBody>
-
     @GET("df/servers/{serverId}/characters")
     suspend fun getCharacterInfo(
         @Path("serverId") serverId: String,
