@@ -6,7 +6,6 @@ import androidx.annotation.RequiresExtension
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.common.Resource
-import com.data.remote.room.Entity.Dao.CharacterDao
 import com.domain.model.characterDto
 import com.domain.use_case.GetCharacterInfoUseCase
 import com.presentation.CharacterListState
@@ -22,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CharacterInfoViewModel @Inject constructor(
     private val getCharacterInfoUseCase: GetCharacterInfoUseCase,
-    private val characterDao: CharacterDao
+    // private val characterDao: CharacterDao
 ) : ViewModel() {
 
     private val _character = MutableStateFlow<characterDto?>(null)
@@ -43,18 +42,18 @@ class CharacterInfoViewModel @Inject constructor(
     private val _level = MutableStateFlow<Int>(0)
     val level: StateFlow<Int> = _level
 
-    fun insert(character: Char) {
-        viewModelScope.launch {
-            characterDao.insert(character)
-            characters = characterDao.getAllCharacters() // 새로고침
-        }
-    }
-
-    fun loadCharacters() {
-        viewModelScope.launch {
-            characters = characterDao.getAllCharacters()
-        }
-    }
+//    fun insert(character: Char) {
+//        viewModelScope.launch {
+//            characterDao.insert(character)
+//            characters = characterDao.getAllCharacters() // 새로고침
+//        }
+//    }
+//
+//    fun loadCharacters() {
+//        viewModelScope.launch {
+//            characters = characterDao.getAllCharacters()
+//        }
+//    }
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun getCharacterInfo(serverId: String, characterNameItem: String) {
