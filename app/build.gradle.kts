@@ -56,6 +56,11 @@ android {
 }
 
 dependencies {
+
+
+    implementation(libs.room)
+    implementation(libs.room.compiler)
+    implementation(libs.room.ktx)
     //implementation("com.google.dagger:hilt-android:2.48")
     implementation(libs.hilt.dagger)
     kapt(libs.dagger.hilt.compiler)

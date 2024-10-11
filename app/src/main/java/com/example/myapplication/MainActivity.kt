@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
                     NavHost(navController = navController, startDestination = "home") {
                         composable("home") {
                             // Pass the navController down to the CharacterSearchScreen
-                            HomeScreen(navController = navController)
-                            //CharacterSearchScreen(navController = navController)
+                            //HomeScreen(navController = navController)
+                            CharacterSearchScreen(navController = navController)
                         }
                         composable(
                             "equipment/{equipmentListJson}",
