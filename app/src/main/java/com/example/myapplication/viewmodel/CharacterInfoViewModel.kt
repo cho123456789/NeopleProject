@@ -3,9 +3,14 @@ package com.example.myapplication.viewmodel
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresExtension
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.common.Resource
+import com.data.remote.room.AppDatabase
+import com.data.remote.room.CharacterDao
+import com.data.remote.room.CharacterDto
 import com.domain.model.characterDto
 import com.domain.use_case.GetCharacterInfoUseCase
 import com.presentation.CharacterListState
@@ -21,6 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CharacterInfoViewModel @Inject constructor(
     private val getCharacterInfoUseCase: GetCharacterInfoUseCase,
+    private val characterDao: CharacterDao,
+    private val appDatabase: AppDatabase
     // private val characterDao: CharacterDao
 ) : ViewModel() {
 
@@ -42,18 +49,17 @@ class CharacterInfoViewModel @Inject constructor(
     private val _level = MutableStateFlow<Int>(0)
     val level: StateFlow<Int> = _level
 
-//    fun insert(character: Char) {
-//        viewModelScope.launch {
-//            characterDao.insert(character)
-//            characters = characterDao.getAllCharacters() // 새로고침
-//        }
-//    }
-//
-//    fun loadCharacters() {
-//        viewModelScope.launch {
-//            characters = characterDao.getAllCharacters()
-//        }
-//    }
+    private val _characters = mutableStateOf<List<CharacterDto>>(emptyList())
+    val characters: State<List<CharacterDto>> = _characters
+
+    init {
+        loadCharacters()
+    }
+    private fun loadCharacters() {
+        viewModelScope.launch {
+            _characters.value = characterDao.getAllCharacters()
+        }
+    }
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun getCharacterInfo(serverId: String, characterNameItem: String) {
@@ -63,10 +69,11 @@ class CharacterInfoViewModel @Inject constructor(
                     val characterResponse = resource.data
                     val servers = characterResponse?.charactItem
                     val characterIds = servers?.map { it.characterId }
-                    Log.d("viewmodel", characterIds.toString())
+                    Log.d("characterIds", characterIds.toString())
                     val characterName = servers?.map { it.characterName}
                     if(characterIds != null) {_characterId.value = characterIds}
                     if(characterName != null){ _characterName.value = characterName }
+
                 }
                 is Resource.Error -> {
                     CharacterListState(
@@ -82,5 +89,22 @@ class CharacterInfoViewModel @Inject constructor(
                 else -> {}
             }
         }.launchIn(viewModelScope)
+    }
+    fun addCharacter(characterId: String, inputServerId: String, characterNameIds: String) {
+        viewModelScope.launch {
+            val characterDto = CharacterDto(
+                characterId = characterId,
+                characterServer = inputServerId,
+                characterName =  characterNameIds
+            )
+            characterDao.insertCharacter(characterDto)
+            loadCharacters()
+        }
+    }
+    fun deleteCharacter(characterId: Long) {
+        viewModelScope.launch {
+            characterDao.deleteCharacterById(characterId)
+            loadCharacters()
+        }
     }
 }

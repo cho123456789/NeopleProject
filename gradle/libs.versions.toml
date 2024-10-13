@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.0"
+agp = "8.6.0"
 hiltCompilerVersion = "2.48"  # 이름 변경
 kotlin = "1.9.0"
 coreKtx = "1.10.1"
@@ -25,9 +25,8 @@ hilt = "2.48"
 hilt-dagger = "2.48"
 ui = "1.4.3"
 compose-bom = "2024.02.02"
-room-room = "2.5.0"
-room-compiler = "2.6.1"
-room-ktx = "2.6.1"
+room_version = "2.6.1"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -57,10 +56,12 @@ androidx-compose-material = { group = "androidx.wear.compose", name = "compose-m
 androidx-room = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 hilt-dagger = { module = "com.google.dagger:hilt-android", version.ref = "hilt-dagger" }
-
-room = { module ="androix.room:room-runtime", version.ref = "room-room"}
-room-compiler = {module = "androidx.room:room-compiler", version.ref = "room-compiler"}
-room-ktx = {module = "androidx.room:room-ktx",version.ref ="room-ktx"}
+# Room runtime
+androidx_room_runtime = { module = "androidx.room:room-runtime", version.ref = "room_version" }
+# Room compiler for annotation processing (use kapt in Kotlin projects)
+androidx_room_compiler = { module = "androidx.room:room-compiler", version.ref = "room_version" }
+# Optional - Room Kotlin Extensions and Coroutines support
+androidx_room_ktx = { module = "androidx.room:room-ktx", version.ref = "room_version" }
 
 
 [plugins]

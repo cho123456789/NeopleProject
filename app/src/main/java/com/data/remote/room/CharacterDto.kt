@@ -1,14 +1,14 @@
-package com.data.remote.room.Entity
+package com.data.remote.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "Characters")
-data class CharacterDto (
+@Entity(tableName = "characters")
+public data class CharacterDto (
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0,
+    val id: Long = 0,
     val characterId: String,
     val characterServer : String,
-    val characterName: String,
+    val characterName: String
 )

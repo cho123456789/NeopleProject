@@ -50,17 +50,18 @@ android {
 
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            configurations.implementation{
+                exclude(group = "com.intellij", module = "annotations")
+            }
         }
     }
 }
 
 dependencies {
-
-
-    implementation(libs.room)
-    implementation(libs.room.compiler)
-    implementation(libs.room.ktx)
+    implementation(libs.androidx.room)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime)
     //implementation("com.google.dagger:hilt-android:2.48")
     implementation(libs.hilt.dagger)
     kapt(libs.dagger.hilt.compiler)

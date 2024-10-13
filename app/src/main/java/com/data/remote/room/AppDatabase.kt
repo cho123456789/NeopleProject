@@ -1,24 +1,24 @@
-package com.database
+package com.data.remote.room
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.data.remote.room.CharacterDto
 
-@Database(entities = [CharacterDto::class],version= 1, exportSchema = false)
-abstract class characterDatabase : RoomDatabase() {
+@Database(entities = [CharacterDto::class], version = 1, exportSchema = false)
+public abstract class AppDatabase : RoomDatabase() {
+    abstract fun characterDao(): CharacterDao
 
     companion object {
         @Volatile
-        private var INSTANCE: characterDatabase? = null
+        private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context): characterDatabase {
+        fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    characterDatabase::class.java,
-                    "character_database"
+                    AppDatabase::class.java,
+                    "app_database"
                 ).build()
                 INSTANCE = instance
                 instance
