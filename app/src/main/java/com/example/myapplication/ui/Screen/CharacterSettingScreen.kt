@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -66,7 +68,7 @@ fun HomeScreen(
     Box(
         modifier = Modifier
             .padding(10.dp)
-            .fillMaxWidth()
+            .wrapContentSize()
             .background(Color.White)
     ) {
         Row(
@@ -115,20 +117,20 @@ fun CharacterStats(
         Text(
             text = adventureName,
             color = Color.Blue,
-            style = MaterialTheme.typography.h2
+            style = MaterialTheme.typography.h6
         )
         Spacer(modifier = Modifier.height(5.dp))
         Text(
             text = jobGrowName,
             color = Color.Black,
-            style = MaterialTheme.typography.h2
+            style = MaterialTheme.typography.h6
         )
         Spacer(modifier = Modifier.height(5.dp))
 
         Text(
             text = characterName + " | " + characterSever,
             color = Color.Black,
-            style = MaterialTheme.typography.h2
+            style = MaterialTheme.typography.h6
         )
 
         Spacer(modifier = Modifier.height(5.dp))
@@ -136,7 +138,7 @@ fun CharacterStats(
         Text(
             text = "[" + GuildName + "]",
             color = Color.Black,
-            style = MaterialTheme.typography.h2
+            style = MaterialTheme.typography.h6
         )
     }
 }

@@ -15,6 +15,7 @@ import com.domain.model.characterDto
 import com.domain.use_case.GetCharacterInfoUseCase
 import com.presentation.CharacterListState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,11 +38,11 @@ class CharacterInfoViewModel @Inject constructor(
     private val _characterId = MutableStateFlow<List<String?>>(emptyList())
     val characterId: StateFlow<List<String?>> = _characterId.asStateFlow()
 
-    private val _characterName =MutableStateFlow<List<String?>>(emptyList())
+    private val _characterName = MutableStateFlow<List<String?>>(emptyList())
     val characterName: StateFlow<List<String?>> = _characterName
 
     private val _jobName = MutableStateFlow("")
-    val jobName : StateFlow<String> = _jobName
+    val jobName: StateFlow<String> = _jobName
 
     private val _serverId = MutableStateFlow("")
     val serverId: StateFlow<String> = _serverId
@@ -55,6 +56,7 @@ class CharacterInfoViewModel @Inject constructor(
     init {
         loadCharacters()
     }
+
     private fun loadCharacters() {
         viewModelScope.launch {
             _characters.value = characterDao.getAllCharacters()
@@ -63,44 +65,54 @@ class CharacterInfoViewModel @Inject constructor(
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun getCharacterInfo(serverId: String, characterNameItem: String) {
-        getCharacterInfoUseCase(serverId, characterNameItem).onEach { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    val characterResponse = resource.data
-                    val servers = characterResponse?.charactItem
-                    val characterIds = servers?.map { it.characterId }
-                    Log.d("characterIds", characterIds.toString())
-                    val characterName = servers?.map { it.characterName}
-                    if(characterIds != null) {_characterId.value = characterIds}
-                    if(characterName != null){ _characterName.value = characterName }
+        viewModelScope.launch(Dispatchers.IO) {
+            getCharacterInfoUseCase(serverId, characterNameItem).onEach { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        val characterResponse = resource.data
+                        val servers = characterResponse?.charactItem
+                        val characterIds = servers?.map { it.characterId }
+                        Log.d("characterIds", characterIds.toString())
+                        val characterName = servers?.map { it.characterName }
+                        if (characterIds != null) {
+                            _characterId.value = characterIds
+                        }
+                        if (characterName != null) {
+                            _characterName.value = characterName
+                        }
 
-                }
-                is Resource.Error -> {
-                    CharacterListState(
-                        error = resource.message ?: "An unexpected error occurred"
-                    ).toString()
-                }
+                    }
 
-                is Resource.Loading -> {
-                    CharacterListState(
-                        isLoading = resource.message ?: "data Loading..."
-                    ).toString()
+                    is Resource.Error -> {
+                        CharacterListState(
+                            error = resource.message ?: "An unexpected error occurred"
+                        ).toString()
+                    }
+
+                    is Resource.Loading -> {
+                        CharacterListState(
+                            isLoading = resource.message ?: "data Loading..."
+                        ).toString()
+                    }
+
+                    else -> {}
                 }
-                else -> {}
-            }
-        }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
+        }
     }
+
     fun addCharacter(characterId: String, inputServerId: String, characterNameIds: String) {
         viewModelScope.launch {
             val characterDto = CharacterDto(
                 characterId = characterId,
                 characterServer = inputServerId,
-                characterName =  characterNameIds
+                characterName = characterNameIds
             )
             characterDao.insertCharacter(characterDto)
             loadCharacters()
         }
     }
+
     fun deleteCharacter(characterId: Long) {
         viewModelScope.launch {
             characterDao.deleteCharacterById(characterId)

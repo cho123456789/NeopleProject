@@ -6,6 +6,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -107,6 +108,8 @@ fun CharacterSearchScreen(
 
     val database = AppDatabase.getDatabase(context = context)
 
+
+
     val options = listOf(
         "cain" to "카인",
         "diregie" to "디레지에",
@@ -179,15 +182,14 @@ fun CharacterSearchScreen(
                     singleLine = true,
                     trailingIcon = {
                         IconButton(onClick = {
+                            viewModel.getCharacterInfo(selectedOption, inputCharacterName)
                             // 서버 ID로 캐릭터 정보 가져오기
-                            getServerIdById(inputServerId)?.let {
-                                viewModel.getCharacterInfo(it, inputCharacterName)
-                            }
+                            //viewModelImage.getCharacterImage(selectedOption, characterId)
 
                             viewModel.addCharacter(
                                 characterId = characterId,
                                 inputServerId = selectedOption,
-                                characterNameIds =  inputCharacterName
+                                characterNameIds = inputCharacterName
                             )
 
                         }) {
@@ -209,11 +211,18 @@ fun CharacterSearchScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(10.dp),
+                            .padding(10.dp)
+                            .clickable{
+                                //viewModelImage.getCharacterImage(selectedOption, characterId)
+                                Log.d("character.characterServer",character.characterServer)
+                                viewModel.getCharacterInfo(character.characterServer, character.characterName)
+                                viewModelSetting.getCharacterSetting(character.characterServer,characterId)
+                                viewModelImage.getCharacterImage(character.characterServer, characterId)
+                            },
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(text = "[" +getServerString(character.characterServer)+"]" +" " + character.characterName)
+                        Text(text = "[" + getServerString(character.characterServer) + "]" + " " + character.characterName)
                         IconButton(onClick = {
                             viewModel.deleteCharacter(character.id)
                         }) {
@@ -221,6 +230,16 @@ fun CharacterSearchScreen(
                         }
                     }
                 }
+            }
+            profileImg?.let {
+                CharacterSettingScreen(
+                    adventureNameIds,
+                    characterNameIds,
+                    inputServerId,
+                    jobGrowNameIds,
+                    GuildNameIds,
+                    it
+                )
             }
         }
     }
@@ -338,6 +357,7 @@ fun getServerIdById(serverId: String): String? {
     )
     return serverMap[serverId]
 }
+
 fun getServerString(serverId: String): String? {
     val serverMap = mapOf(
         "cain" to "카인",
