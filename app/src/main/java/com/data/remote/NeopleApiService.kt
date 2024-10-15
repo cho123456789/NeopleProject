@@ -1,4 +1,5 @@
 package com.data.remote
+import com.data.remote.dto.BufferEquipmentDto
 import com.data.remote.dto.CharacterInfoDto
 import com.data.remote.dto.EquipmentDto
 import com.example.myapplication.network.CharacterResponse
@@ -30,4 +31,11 @@ interface NeopleApiService {
         @Path("characterId") characterId: String,
         @Query("apikey") apiKey: String,
     ): Response<EquipmentDto>
+
+    @GET("df/servers/{serverId}/characters/{characterId}/skill/buff/equip/equipment")
+    suspend fun getBufferEquipment(
+        @Path("serverId") serverId: String,
+        @Path("characterId") characterId: String,
+        @Query("apikey") apiKey: String
+    ):Response<BufferEquipmentDto>
 }

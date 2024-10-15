@@ -63,7 +63,7 @@ fun EquipmentScreen(
             ) {
                 Text(
                     text = "무기",
-                    style = MaterialTheme.typography.h2
+                    style = MaterialTheme.typography.h6
                 )
             }
         }
@@ -84,7 +84,7 @@ fun EquipmentScreen(
         item {
             Text(
                 text = "칭호",
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -94,11 +94,12 @@ fun EquipmentScreen(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
                 thickness = 1.dp // 두께 조절
-            )        }
+            )
+        }
         item {
             Text(
                 text = "보조무기",
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -108,11 +109,12 @@ fun EquipmentScreen(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
                 thickness = 1.dp // 두께 조절
-            )        }
+            )
+        }
         item {
             Text(
                 text = "머리어깨",
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -122,12 +124,13 @@ fun EquipmentScreen(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
                 thickness = 1.dp // 두께 조절
-            )        }
+            )
+        }
 
         item {
             Text(
                 text = "상의",
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -138,11 +141,12 @@ fun EquipmentScreen(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
                 thickness = 1.dp // 두께 조절
-            )        }
+            )
+        }
         item {
             Text(
                 text = "하의",
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -152,12 +156,13 @@ fun EquipmentScreen(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
                 thickness = 1.dp // 두께 조절
-            )        }
+            )
+        }
 
         item {
             Text(
                 text = "벨트",
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -167,11 +172,12 @@ fun EquipmentScreen(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
                 thickness = 1.dp // 두께 조절
-            )        }
+            )
+        }
         item {
             Text(
                 text = "신발",
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -181,11 +187,12 @@ fun EquipmentScreen(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
                 thickness = 1.dp // 두께 조절
-            )        }
+            )
+        }
         item {
             Text(
                 text = "팔찌",
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -195,11 +202,12 @@ fun EquipmentScreen(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
                 thickness = 1.dp // 두께 조절
-            )        }
+            )
+        }
         item {
             Text(
                 text = "목걸이",
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -209,11 +217,12 @@ fun EquipmentScreen(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
                 thickness = 1.dp // 두께 조절
-            )        }
+            )
+        }
         item {
             Text(
                 text = "반지",
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -223,11 +232,12 @@ fun EquipmentScreen(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
                 thickness = 1.dp // 두께 조절
-            )        }
+            )
+        }
         item {
             Text(
                 text = "보조장비",
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -237,11 +247,12 @@ fun EquipmentScreen(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
                 thickness = 1.dp // 두께 조절
-            )        }
+            )
+        }
         item {
             Text(
                 text = "마법석",
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -251,11 +262,12 @@ fun EquipmentScreen(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
                 thickness = 1.dp // 두께 조절
-            )        }
+            )
+        }
         item {
             Text(
                 text = "귀걸이",
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -265,8 +277,10 @@ fun EquipmentScreen(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
                 thickness = 1.dp // 두께 조절
-            )        }
+            )
+        }
     }
+    BottomNavigationBar(navController = navController)
 }
 
 @Composable
@@ -341,10 +355,8 @@ fun ItemCard(item: Item) {
                 }
             }
         }
-
     }
 }
-
 
 fun removePlusSign(text: String): String {
     return text.replace("+", " ")

@@ -19,6 +19,7 @@ import com.data.remote.dto.Item
 import com.example.myapplication.ui.Screen.CharacterSearchScreen
 import com.example.myapplication.ui.Screen.EquipmentScreen
 import com.example.myapplication.ui.Screen.HomeScreen
+import com.example.myapplication.ui.Screen.MainScreen
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                             CharacterSearchScreen(navController = navController)
                         }
                         composable(
-                            "equipment/{equipmentListJson}",
+                            "장착장비/{equipmentListJson}",
                             arguments = listOf(navArgument("equipmentListJson") {
                                 type = NavType.StringType
                             })
@@ -53,12 +54,12 @@ class MainActivity : AppCompatActivity() {
                                 navController = navController
                             )
                         }
-                        composable("notifications") {
+                        composable("버프강화") {
                             // Pass the navController down to the CharacterSearchScreen
                             CharacterSearchScreen(navController = navController)
                         }
-                        composable("back") {
-                            HomeScreen(navController = navController)
+                        composable("크리쳐") {
+                            MainScreen(navController = navController)
                         }
                     }
                     //BottomNavigationBar(navController)

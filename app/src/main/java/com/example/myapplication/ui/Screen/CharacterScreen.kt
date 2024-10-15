@@ -1,10 +1,10 @@
 package com.example.myapplication.ui.Screen
 
-import CharacterSettingScreen
 import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresExtension
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +29,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
@@ -36,6 +37,7 @@ import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.ExposedDropdownMenuDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -57,57 +59,47 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.data.remote.room.AppDatabase
 import com.example.myapplication.R
 import com.example.myapplication.viewmodel.CharacterEquipmentViewModel
-import com.example.myapplication.viewmodel.CharacterImageViewModel
 import com.example.myapplication.viewmodel.CharacterInfoViewModel
-import com.example.myapplication.viewmodel.CharacterSettingViewModel
 import com.google.gson.Gson
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @SuppressLint("MutableCollectionMutableState")
-@OptIn(ExperimentalMaterialApi::class)
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun CharacterSearchScreen(
     navController: NavController,
     viewModel: CharacterInfoViewModel = hiltViewModel(),
-    viewModelSetting: CharacterSettingViewModel = hiltViewModel(),
-    viewModelImage: CharacterImageViewModel = hiltViewModel(),
     viewModelEquipment: CharacterEquipmentViewModel = hiltViewModel()
 ) {
-    //val characterId by viewModel.character.collectAsState()
 
     val characterIds by viewModel.characterId.collectAsState(initial = emptyList())
-    val equipment by viewModelEquipment.equipment.collectAsState(initial = emptyList())
-    val jobGrowNameIds by viewModelSetting.jobGrowName.collectAsState()
-    val GuildNameIds by viewModelSetting.guildName.collectAsState()
-    val characterNameIds by viewModelSetting.characterName.collectAsState()
-    val adventureNameIds by viewModelSetting.adventureName.collectAsState()
-    val profileImg by viewModelImage.imageBitmap.collectAsState()
-
+    val equipment by viewModel.equipment.collectAsState(initial = emptyList())
+    val jobGrowNameIds by viewModel.jobGrowName.collectAsState()
+    val GuildNameIds by viewModel.guildName.collectAsState()
+    val characterNameIds by viewModel.characterName.collectAsState()
+    val adventureNameIds by viewModel.adventureName.collectAsState()
+    val profileImg by viewModel.imageBitmap.collectAsState()
+    val imgCheck by viewModel.ImageCheck.collectAsState()
 
     val characterId = characterIds.joinToString()
-    val context = LocalContext.current
 
     var inputCharacterName by remember { mutableStateOf("") }
     var inputServerId by remember { mutableStateOf("") }
 
     var selectedOption by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
-
-    var characterList by remember { mutableStateOf<List<String>>(emptyList()) } // List로 상태 관리
-
-    val database = AppDatabase.getDatabase(context = context)
-
 
 
     val options = listOf(
@@ -133,7 +125,7 @@ fun CharacterSearchScreen(
             Row(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .padding(5.dp)
+                    .padding(7.dp)
             ) {
                 //Text("선택된 값: $selectedOption")  // 선택된 값 출력
 
@@ -205,157 +197,74 @@ fun CharacterSearchScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp)
+                    .padding(5.dp)
             ) {
                 itemsIndexed(viewModel.characters.value) { index, character ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(10.dp)
-                            .clickable{
-                                //viewModelImage.getCharacterImage(selectedOption, characterId)
-                                Log.d("character.characterServer",character.characterServer)
-                                viewModel.getCharacterInfo(character.characterServer, character.characterName)
-                                viewModelSetting.getCharacterSetting(character.characterServer,characterId)
-                                viewModelImage.getCharacterImage(character.characterServer, characterId)
+                            .clickable {
+                                Log.d("character.characterServer", character.characterServer)
+                                viewModel.getCharacterInfo(
+                                    character.characterServer,
+                                    character.characterName
+                                )
                             },
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(text = "[" + getServerString(character.characterServer) + "]" + " " + character.characterName)
-                        IconButton(onClick = {
-                            viewModel.deleteCharacter(character.id)
-                        }) {
-                            Icon(Icons.Default.Delete, contentDescription = "삭제")
+                        Row(
+                            Modifier.padding(
+                                5.dp
+                            )
+                        ) {
+                            OutlinedButton(
+                                onClick = {
+                                    val equipmentListJson = Gson().toJson(equipment)
+                                    val encodedEquipmentListJson = URLEncoder.encode(
+                                        equipmentListJson,
+                                        StandardCharsets.UTF_8.toString()
+                                    )
+                                    navController.navigate("장착장비/$encodedEquipmentListJson")
+                                    //navController.navigate("main")
+                                },
+                                border = BorderStroke(1.dp, Color.Blue),
+                                shape = RoundedCornerShape(50), // = 50% percent
+                                // or shape = CircleShape
+                                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
+                            ) {
+                                Text(
+                                    text = "장비 조회",
+                                    fontSize = 12.sp,
+                                    color = Color.Blue,
+                                    fontWeight = FontWeight.W100
+                                )
+                            }
+                            IconButton(onClick = {
+                                viewModel.deleteCharacter(character.id)
+                                viewModel.resetImageCheck()
+                            }) {
+                                Icon(Icons.Default.Delete, contentDescription = "삭제")
+                            }
                         }
                     }
                 }
             }
-            profileImg?.let {
-                CharacterSettingScreen(
-                    adventureNameIds,
-                    characterNameIds,
-                    inputServerId,
-                    jobGrowNameIds,
-                    GuildNameIds,
-                    it
-                )
+            if (imgCheck) {
+                profileImg?.let {
+                    CharacterSettingScreen(
+                        adventureNameIds,
+                        characterNameIds.toString(),
+                        inputServerId,
+                        jobGrowNameIds,
+                        GuildNameIds,
+                        it
+                    )
+                }
             }
         }
     }
-
-
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(5.dp),
-//        verticalArrangement = Arrangement.Top,
-//        horizontalAlignment = Alignment.CenterHorizontally
-//    ) {
-//        Spacer(modifier = Modifier.height(10.dp))
-//
-//        TextField(
-//            value = inputCharacterId,
-//            onValueChange = { inputCharacterId = it },
-//            label = { Text("Character Name") },
-//            modifier = Modifier.fillMaxWidth(),
-//            singleLine = true
-//        )
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        TextField(
-//            value = inputServerId,
-//            onValueChange = { inputServerId = it },
-//            label = { Text("Server ID") },
-//            modifier = Modifier.fillMaxWidth(),
-//            singleLine = true,
-//            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-//            trailingIcon = {
-//                IconButton(onClick = { /* 검색 로직 */ }) {
-//                    Icon(Icons.Default.Search, contentDescription = null)
-//                }
-//            }
-//        )
-//
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        Button(
-//            onClick = {
-//                getServerIdById(inputServerId)?.let {
-//                    viewModel.getCharacterInfo(
-//                        it,
-//                        inputCharacterId
-//                    )
-//                }
-////                    Log.d("Screen1",serverId + inputCharacterId)
-//            },
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            Text("Search")
-//            getServerIdById(inputServerId)?.let {
-//                viewModelSetting.getCharacterSetting(
-//                    it,
-//                    characterId
-//                )
-//            }
-//            getServerIdById(inputServerId)?.let {
-//                viewModelImage.getCharacterImage(
-//                    it,
-//                    characterId
-//                )
-//            }
-//            getServerIdById(inputServerId)?.let {
-//                viewModelEquipment.getCharacterEquipment(
-//                    it,
-//                    characterId
-//                )
-//            }
-//        }
-//        Spacer(modifier = Modifier.height(10.dp))
-//        profileImg?.let {
-//            CharacterSettingScreen(
-//                adventureName,
-//                characterName,
-//                inputServerId,
-//                jobGrowName,
-//                GuildName,
-//                it
-//            )
-//        }
-//        Box(
-//            modifier = Modifier
-//                .padding(10.dp)  // 상단에 약간의 간격 추가
-//        ) {
-//            Button(
-//                onClick = {
-//                    Log.d("Equiment", equipment.toString())
-//                    val equipmentListJson = Gson().toJson(equipment)
-//                    val encodedEquipmentListJson =
-//                        URLEncoder.encode(equipmentListJson, StandardCharsets.UTF_8.toString())
-//                    // "equipment" 경로로 이동
-//                    navController.navigate("equipment/$encodedEquipmentListJson")
-//                },
-//            ) {
-//                Text("장착장비")
-//            }
-//        }
-//    }
-}
-
-fun getServerIdById(serverId: String): String? {
-    val serverMap = mapOf(
-        "카인" to "cain",
-        "디레지에" to "diregie",
-        "시로코" to "siroco",
-        "프레이" to "prey",
-        "카시야스" to "casillas",
-        "힐더" to "hilder",
-        "안톤" to "anton",
-        "바칼" to "bakal"
-    )
-    return serverMap[serverId]
 }
 
 fun getServerString(serverId: String): String? {

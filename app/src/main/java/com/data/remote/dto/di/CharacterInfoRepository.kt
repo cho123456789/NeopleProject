@@ -2,14 +2,17 @@ package com.data.remote.dto.di
 
 import com.data.remote.NeoplelmageService
 import com.data.remote.NeopleApiService
+import com.data.remote.repository.BufferEquipmentRepositoryImpl
 import com.data.remote.repository.CharacterEquipmentRepositorylmpl
 import com.data.remote.repository.CharacterImageRepositoryImpl
 import com.data.remote.repository.CharacterInfoRepositoryImpl
 import com.data.remote.repository.CharacterSettingRepositoryImpl
+import com.domain.respository.BufferEquipmentRepository
 import com.domain.respository.CharacterEquipmentRepository
 import com.domain.respository.CharacterImageRepository
 import com.domain.respository.CharacterInfoRepository
 import com.domain.respository.CharacterSettingRepository
+import com.domain.use_case.GetBufferEquipmentUseCase
 import com.domain.use_case.GetCharacterEquipmentUseCase
 import com.domain.use_case.GetCharacterImageUseCase
 import com.domain.use_case.GetCharacterInfoUseCase
@@ -23,6 +26,13 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
+
+    @Provides
+    @Singleton
+    fun provideBufferEquipmentRepository(api : NeopleApiService): BufferEquipmentRepository {
+        return BufferEquipmentRepositoryImpl(api)
+    }
+
     @Provides
     @Singleton
     fun provideCharacterInfoRepository(api : NeopleApiService): CharacterInfoRepository {
@@ -47,6 +57,12 @@ object RepositoryModule {
         return CharacterEquipmentRepositorylmpl(api)
     }
 
+
+    @Provides
+    @Singleton
+    fun provideGetBufferEquipmentUseCase(repository: BufferEquipmentRepository): GetBufferEquipmentUseCase {
+        return GetBufferEquipmentUseCase(repository)
+    }
 
     @Provides
     @Singleton
