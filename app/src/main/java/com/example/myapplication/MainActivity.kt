@@ -15,7 +15,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.data.remote.dto.BufferEquipment
 import com.data.remote.dto.Item
+import com.example.myapplication.ui.Screen.BuffEquipmentScreen
 import com.example.myapplication.ui.Screen.CharacterSearchScreen
 import com.example.myapplication.ui.Screen.EquipmentScreen
 import com.example.myapplication.ui.Screen.HomeScreen
@@ -38,25 +40,15 @@ class MainActivity : AppCompatActivity() {
                             //HomeScreen(navController = navController)
                             CharacterSearchScreen(navController = navController)
                         }
-                        composable(
-                            "장착장비/{equipmentListJson}",
-                            arguments = listOf(navArgument("equipmentListJson") {
-                                type = NavType.StringType
-                            })
-                        ) { backStackEntry ->
-                            val equipmentListJson =
-                                backStackEntry.arguments?.getString("equipmentListJson")
-                            val gson = Gson()
-                            val equipmentList =
-                                gson.fromJson(equipmentListJson, Array<Item>::class.java).toList()
+                        composable("장착장비"){
                             EquipmentScreen(
-                                equipmentList = equipmentList,
                                 navController = navController
                             )
                         }
-                        composable("버프강화") {
-                            // Pass the navController down to the CharacterSearchScreen
-                            CharacterSearchScreen(navController = navController)
+                        composable("버프강화"){
+                            BuffEquipmentScreen(
+                                navController = navController
+                            )
                         }
                         composable("크리쳐") {
                             MainScreen(navController = navController)

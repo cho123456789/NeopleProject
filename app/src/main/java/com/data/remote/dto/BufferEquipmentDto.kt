@@ -24,7 +24,7 @@ data class Skill(
 
 data class Buff(
     @SerializedName("skillInfo") val skillInfo: SkillInfo,
-    @SerializedName("equipment") val equipment: List<Equipment>
+    @SerializedName("equipment") val equipment: List<BufferEquipment>
 )
 
 data class SkillInfo(
@@ -39,7 +39,7 @@ data class SkillOption(
     @SerializedName("values") val values: List<String>
 )
 
-data class Equipment(
+data class BufferEquipment(
     @SerializedName("slotId") val slotId: String,
     @SerializedName("slotName") val slotName: String,
     @SerializedName("itemId") val itemId: String,

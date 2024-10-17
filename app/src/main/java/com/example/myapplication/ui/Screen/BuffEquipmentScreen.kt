@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.data.remote.dto.BufferEquipment
 import com.data.remote.dto.Enchant
 import com.data.remote.dto.Item
 import com.data.remote.dto.SetItem
@@ -36,32 +37,35 @@ import com.data.remote.dto.SirocoOption
 import com.data.remote.dto.Status
 import com.data.remote.dto.TransformInfo
 import com.data.remote.dto.UpgradeInfo
+import com.example.myapplication.ui.theme.Blue
 import com.example.myapplication.ui.theme.NameYellow
+import com.example.myapplication.ui.theme.Purple80
 import com.example.myapplication.ui.theme.PurpleBink
+import com.example.myapplication.viewmodel.BufferEquipmentViewModel
 import com.example.myapplication.viewmodel.CharacterEquipmentViewModel
-import com.example.myapplication.viewmodel.CharacterInfoViewModel
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
-fun EquipmentScreen(
+fun BuffEquipmentScreen(
     navController: NavController,
-    //equipmentList: List<Item>,
-    viewModel: CharacterEquipmentViewModel = hiltViewModel(),
-) {
+    //equipmentList: List<BufferEquipment>
+    viewModel: BufferEquipmentViewModel = hiltViewModel(),
 
-    val equipment by viewModel.equipment.collectAsState(initial = emptyList())
-
+    ) {
+    val equipment by viewModel.bufferEquipment.collectAsState(initial = emptyList())
+    val buffLevel by viewModel.bufflevel.collectAsState()
+    val buffName by viewModel.buffname.collectAsState()
     val context = LocalContext.current
     val (characterId, serverId) = getCharacterId(context)
 
     if (characterId != null && serverId != null) {
         Log.d("Character ID", "Retrieved Character ID: $characterId")
         Log.d("Server ID", "Retrieved Server ID: $serverId")
-        viewModel.getCharacterEquipment(serverId, characterId)
+        viewModel.getBuffCharacterEquipment(serverId, characterId)
     }
 
 
-    Log.d("EquipmentScreen", equipment.toString())
+    Log.d("BuffEquipmentScreen", equipment.toString())
     val weaponItems = equipment.filter { it.slotName == "무기" }
     val styleItems = equipment.filter { it.slotName == "칭호" }
     val subItems = equipment.filter { it.slotName == "보조무기" }
@@ -78,7 +82,6 @@ fun EquipmentScreen(
     val earringItems = equipment.filter { it.slotName == "귀걸이" }
 
     LazyColumn {
-
         item {
             Row(
                 modifier = Modifier
@@ -90,7 +93,29 @@ fun EquipmentScreen(
                         bottom = 5.dp
                     )
             ) {
+                Text(
+                    modifier = Modifier
+                        .padding(
+                            start = 10.dp,
+                            end = 5.dp,
+                            bottom = 5.dp,
+                            top = 20.dp
+                        ),
+                    text = buffName,
+                    style = MaterialTheme.typography.h6
+                )
 
+                Text(
+                    modifier = Modifier
+                        .padding(
+                            start = 10.dp,
+                            end = 5.dp,
+                            bottom = 10.dp,
+                            top = 20.dp
+                        ),
+                    text = "+" + buffLevel.toString() + " 렙",
+                    style = MaterialTheme.typography.h6
+                )
             }
         }
         items(weaponItems) { item ->
@@ -110,8 +135,7 @@ fun EquipmentScreen(
                     .fillMaxWidth()
                     .padding(5.dp)
             ) {
-
-                ItemCard(item)
+                BufferItemCard(item)
             }
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
@@ -127,7 +151,7 @@ fun EquipmentScreen(
             )
         }
         items(styleItems) { item ->
-            ItemCard(item)
+            BufferItemCard(item)
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
@@ -142,7 +166,7 @@ fun EquipmentScreen(
             )
         }
         items(subItems) { item ->
-            ItemCard(item)
+            BufferItemCard(item)
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
@@ -157,7 +181,7 @@ fun EquipmentScreen(
             )
         }
         items(shoulderItems) { item ->
-            ItemCard(item)
+            BufferItemCard(item)
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
@@ -174,7 +198,7 @@ fun EquipmentScreen(
         }
 
         items(upperBodyItems) { item ->
-            ItemCard(item)
+            BufferItemCard(item)
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
@@ -189,7 +213,7 @@ fun EquipmentScreen(
             )
         }
         items(lowerBodyItems) { item ->
-            ItemCard(item)
+            BufferItemCard(item)
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
@@ -205,7 +229,7 @@ fun EquipmentScreen(
             )
         }
         items(beltItems) { item ->
-            ItemCard(item)
+            BufferItemCard(item)
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
@@ -220,7 +244,7 @@ fun EquipmentScreen(
             )
         }
         items(shoesBodyItems) { item ->
-            ItemCard(item)
+            BufferItemCard(item)
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
@@ -235,7 +259,7 @@ fun EquipmentScreen(
             )
         }
         items(braceletItems) { item ->
-            ItemCard(item)
+            BufferItemCard(item)
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
@@ -250,7 +274,7 @@ fun EquipmentScreen(
             )
         }
         items(necklaceItems) { item ->
-            ItemCard(item)
+            BufferItemCard(item)
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
@@ -265,7 +289,7 @@ fun EquipmentScreen(
             )
         }
         items(ringItems) { item ->
-            ItemCard(item)
+            BufferItemCard(item)
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
@@ -280,7 +304,7 @@ fun EquipmentScreen(
             )
         }
         items(AuxItems) { item ->
-            ItemCard(item)
+            BufferItemCard(item)
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
@@ -295,7 +319,7 @@ fun EquipmentScreen(
             )
         }
         items(ManaItems) { item ->
-            ItemCard(item)
+            BufferItemCard(item)
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
@@ -310,7 +334,7 @@ fun EquipmentScreen(
             )
         }
         items(earringItems) { item ->
-            ItemCard(item)
+            BufferItemCard(item)
             Divider(
                 modifier = Modifier.padding(vertical = 5.dp),
                 color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
@@ -322,7 +346,7 @@ fun EquipmentScreen(
 }
 
 @Composable
-fun ItemCard(item: Item) {
+fun BufferItemCard(bufferEquipment: BufferEquipment) {
     Column(
         modifier = Modifier.padding(10.dp)
     ) {
@@ -338,57 +362,40 @@ fun ItemCard(item: Item) {
                         .fillMaxWidth()
                         .padding(start = 10.dp)
                 ) {
-                    Text(
-                        text = removePlusSign(item.itemName),
-                        fontWeight = FontWeight.Bold,
-                        color = NameYellow,
-                    )
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.End // 오른쪽 정렬
-                    ) {
-                        if (item.slotName == "칭호" || item.slotName == "보조무기") {
-                            Text(
-                                text = "",
-                            )
-                        } else {
-                            if (item.amplificationName == null) {
+                    if (bufferEquipment.slotName == "칭호") {
+                        Text(
+                            text = BuffremovePlusSign(bufferEquipment.itemName),
+                            fontWeight = FontWeight.Bold,
+                            color = Blue,
+                        )
+                    } else {
+                        Text(
+                            text = BuffremovePlusSign(bufferEquipment.itemName),
+                            fontWeight = FontWeight.Bold,
+                            color = NameYellow,
+                        )
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.End // 오른쪽 정렬
+                        ) {
+                            if (bufferEquipment.slotName == "칭호" || bufferEquipment.slotName == "보조무기") {
                                 Text(
-                                    text = "+${item.reinforce}강화/(${item.refine})",
+                                    text = "",
                                 )
                             } else {
-                                Text(
-                                    text = "+${item.reinforce}증폭",
-                                    color = PurpleBink,
-                                    fontWeight = FontWeight.Bold
-                                )
+                                if (bufferEquipment.amplificationName == null) {
+                                    Text(
+                                        text = "+${bufferEquipment.reinforce}강화/(${bufferEquipment.refine})",
+                                    )
+                                } else {
+                                    Text(
+                                        text = "+${bufferEquipment.reinforce}증폭",
+                                        color = PurpleBink,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
                             }
                         }
-                    }
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 10.dp)
-                )
-                {
-                    item.upgradeInfo?.let { upgradeInfo ->
-                        Spacer(modifier = Modifier.height(1.dp))
-                        Text(
-                            text = "ㄴ ${removePlusSign(upgradeInfo.itemName)}",
-                            color = NameYellow
-                        )
-                        Spacer(modifier = Modifier.height(2.dp))
-                    }
-
-                    item.enchant?.let { enchant ->
-                        enchant.explain?.let { explain ->
-                            Text(text = removePlusSign(enchant.explain))
-                        }
-                        Text(
-                            text = enchant.status.joinToString(", ") { removePlusSign("${(it.name)}: ${it.value}") },
-                            fontSize = 15.sp
-                        )
                     }
                 }
             }
@@ -396,14 +403,14 @@ fun ItemCard(item: Item) {
     }
 }
 
-fun removePlusSign(text: String): String {
+fun BuffremovePlusSign(text: String): String {
     return text.replace("+", " ")
 }
 
-@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+
 @Preview(showBackground = true)
 @Composable
-internal fun PreviewMainContainer() {
+internal fun BuffPreviewMainContainer() {
     val navController = rememberNavController()
     // 더미 데이터 생성
     val sampleItems = listOf(

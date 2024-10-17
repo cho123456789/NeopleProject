@@ -1,4 +1,7 @@
 package com.data.remote
+import com.data.remote.dto.Buff
+import com.data.remote.dto.BufferAvaterDto
+import com.data.remote.dto.BufferEquipment
 import com.data.remote.dto.BufferEquipmentDto
 import com.data.remote.dto.CharacterInfoDto
 import com.data.remote.dto.EquipmentDto
@@ -38,4 +41,11 @@ interface NeopleApiService {
         @Path("characterId") characterId: String,
         @Query("apikey") apiKey: String
     ):Response<BufferEquipmentDto>
+
+    @GET("df/servers/{serverId}/characters/{characterId}/skill/buff/equip/avatar")
+    suspend fun getBufferAvatar(
+        @Path("serverId") serverId: String,
+        @Path("characterId") characterId: String,
+        @Query("apikey") apiKey: String
+    ):Response<BufferAvaterDto>
 }

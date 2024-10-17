@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.annotation.RequiresExtension
 import com.common.Constants.API_KEY
 import com.common.Resource
+import com.data.remote.dto.Buff
+import com.data.remote.dto.BufferEquipment
 import com.data.remote.dto.BufferEquipmentDto
 import com.data.remote.dto.CharacterInfoDto
 import com.data.remote.dto.EquipmentDto

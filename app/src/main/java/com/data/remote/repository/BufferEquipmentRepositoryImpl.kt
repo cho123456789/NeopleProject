@@ -2,6 +2,8 @@ package com.data.remote.repository
 
 import com.common.Constants
 import com.data.remote.NeopleApiService
+import com.data.remote.dto.Buff
+import com.data.remote.dto.BufferEquipment
 import com.data.remote.dto.BufferEquipmentDto
 import com.data.remote.dto.CharacterInfoDto
 import com.domain.respository.BufferEquipmentRepository

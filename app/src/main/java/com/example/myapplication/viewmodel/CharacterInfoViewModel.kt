@@ -1,5 +1,7 @@
 package com.example.myapplication.viewmodel
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
@@ -8,20 +10,25 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.common.Resource
+import com.data.remote.dto.BufferEquipment
 import com.data.remote.dto.Item
 import com.data.remote.room.AppDatabase
 import com.data.remote.room.CharacterDao
 import com.data.remote.room.CharacterDto
 import com.domain.model.characterDto
+import com.domain.use_case.GetBufferEquipmentUseCase
 import com.domain.use_case.GetCharacterEquipmentUseCase
 import com.domain.use_case.GetCharacterImageUseCase
 import com.domain.use_case.GetCharacterInfoUseCase
 import com.domain.use_case.GetCharacterSettingUseCase
+import com.example.myapplication.ui.Screen.saveCharacterId
 import com.presentation.CharacterListState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,8 +43,8 @@ class CharacterInfoViewModel @Inject constructor(
     private val getCharacterInfoUseCase: GetCharacterInfoUseCase,
     private val getCharacterImageUseCase: GetCharacterImageUseCase,
     private val getCharacterSettingUseCase: GetCharacterSettingUseCase,
-    private val getCharacterEquipmentUseCase: GetCharacterEquipmentUseCase,
-    private val characterDao: CharacterDao
+    private val characterDao: CharacterDao,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _character = MutableStateFlow<characterDto?>(null)
@@ -73,6 +80,7 @@ class CharacterInfoViewModel @Inject constructor(
     private val _equipment = MutableStateFlow<List<Item>>(emptyList())
     val equipment: StateFlow<List<Item>> = _equipment
 
+
     init {
         loadCharacters()
     }
@@ -99,7 +107,12 @@ class CharacterInfoViewModel @Inject constructor(
                             _characterName.value = characterName
                             getCharacterImage(serverId,characterIds.joinToString(", "))
                             getCharacterSetting(serverId,characterIds.joinToString(", "))
-                            getCharacterEquipment(serverId,characterIds.joinToString(", "))
+                            //getBuffEquipment(serverId,characterIds.joinToString(", "))
+                            saveCharacter(
+                                context = context,
+                                characterId = characterIds.joinToString(", "),
+                                serverId = serverId
+                            )
                         }
                     }
 
@@ -214,28 +227,15 @@ class CharacterInfoViewModel @Inject constructor(
             }.launchIn(viewModelScope)
         }
     }
-    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    fun getCharacterEquipment(serverId: String, characterId: String) {
-        getCharacterEquipmentUseCase(serverId, characterId).onEach { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    val characterResponse = resource.data
-                    if (characterResponse != null) {
-                        _equipment.value = characterResponse.equipment
-                        Log.d("_equipment",_equipment.value.toString())
-                    }
-                }
-                is Resource.Error -> {
-                    CharacterListState(
-                        error = resource.message ?: "An unexpected error occurred"
-                    ).toString()
-                }
-                is Resource.Loading -> {
-                    CharacterListState(
-                        isLoading = resource.message ?: "data Loading..."
-                    ).toString()
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
+}
+fun saveCharacter(context: Context, characterId: String, serverId: String) {
+    // Call the use case or repository to save the character ID
+    saveCharacterId(context, characterId, serverId)
+}
+fun saveCharacterId(context: Context, characterId: String , serverId: String) {
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.putString("characterId", characterId)
+    editor.putString("serverId",serverId)
+    editor.apply()
 }

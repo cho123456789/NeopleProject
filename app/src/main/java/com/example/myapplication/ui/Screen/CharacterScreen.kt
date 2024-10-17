@@ -1,6 +1,8 @@
 package com.example.myapplication.ui.Screen
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresExtension
@@ -69,6 +71,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.data.remote.room.AppDatabase
 import com.example.myapplication.R
+import com.example.myapplication.viewmodel.BufferEquipmentViewModel
 import com.example.myapplication.viewmodel.CharacterEquipmentViewModel
 import com.example.myapplication.viewmodel.CharacterInfoViewModel
 import com.google.gson.Gson
@@ -81,7 +84,7 @@ import java.nio.charset.StandardCharsets
 fun CharacterSearchScreen(
     navController: NavController,
     viewModel: CharacterInfoViewModel = hiltViewModel(),
-    viewModelEquipment: CharacterEquipmentViewModel = hiltViewModel()
+    //bufferViewModel : BufferEquipmentViewModel = hiltViewModel()
 ) {
 
     val characterIds by viewModel.characterId.collectAsState(initial = emptyList())
@@ -92,7 +95,6 @@ fun CharacterSearchScreen(
     val adventureNameIds by viewModel.adventureName.collectAsState()
     val profileImg by viewModel.imageBitmap.collectAsState()
     val imgCheck by viewModel.ImageCheck.collectAsState()
-
     val characterId = characterIds.joinToString()
 
     var inputCharacterName by remember { mutableStateOf("") }
@@ -100,6 +102,8 @@ fun CharacterSearchScreen(
 
     var selectedOption by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
+
+    val context= LocalContext.current
 
 
     val options = listOf(
@@ -175,13 +179,18 @@ fun CharacterSearchScreen(
                     trailingIcon = {
                         IconButton(onClick = {
                             viewModel.getCharacterInfo(selectedOption, inputCharacterName)
-                            // 서버 ID로 캐릭터 정보 가져오기
-                            //viewModelImage.getCharacterImage(selectedOption, characterId)
+
 
                             viewModel.addCharacter(
                                 characterId = characterId,
                                 inputServerId = selectedOption,
                                 characterNameIds = inputCharacterName
+                            )
+
+                            saveCharacterId(
+                                context = context,
+                                characterId = characterId,
+                                serverId = selectedOption
                             )
 
                         }) {
@@ -221,13 +230,7 @@ fun CharacterSearchScreen(
                         ) {
                             OutlinedButton(
                                 onClick = {
-                                    val equipmentListJson = Gson().toJson(equipment)
-                                    val encodedEquipmentListJson = URLEncoder.encode(
-                                        equipmentListJson,
-                                        StandardCharsets.UTF_8.toString()
-                                    )
-                                    navController.navigate("장착장비/$encodedEquipmentListJson")
-                                    //navController.navigate("main")
+                                    navController.navigate("장착장비")
                                 },
                                 border = BorderStroke(1.dp, Color.Blue),
                                 shape = RoundedCornerShape(50), // = 50% percent
@@ -266,7 +269,20 @@ fun CharacterSearchScreen(
         }
     }
 }
-
+fun saveCharacterId(context: Context, characterId: String , serverId: String) {
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.putString("characterId", characterId)
+    editor.putString("serverId",serverId)
+    editor.apply()
+}
+fun getCharacterId(context: Context): Pair<String?, String?> {
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+    val characterId = sharedPreferences.getString("characterId", null)
+    val serverId = sharedPreferences.getString("serverId", null)
+    // Return both as a Pair
+    return Pair(characterId, serverId)
+}
 fun getServerString(serverId: String): String? {
     val serverMap = mapOf(
         "cain" to "카인",

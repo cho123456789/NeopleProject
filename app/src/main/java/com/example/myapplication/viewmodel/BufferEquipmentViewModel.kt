@@ -6,6 +6,7 @@ import androidx.annotation.RequiresExtension
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.common.Resource
+import com.data.remote.dto.BufferEquipment
 import com.data.remote.dto.Item
 import com.domain.use_case.GetBufferEquipmentUseCase
 import com.domain.use_case.GetCharacterEquipmentUseCase
@@ -23,17 +24,29 @@ class BufferEquipmentViewModel @Inject constructor(
     private val getBufferEquipmentUseCase: GetBufferEquipmentUseCase
 ) : ViewModel() {
 
+    private val _bufferEquipment = MutableStateFlow<List<BufferEquipment>>(emptyList())
+    val bufferEquipment: StateFlow<List<BufferEquipment>> = _bufferEquipment
+
+    private val _bufflevel = MutableStateFlow<Int>(0)
+    val bufflevel: StateFlow<Int> = _bufflevel
+
+    private val _buffname = MutableStateFlow<String>("")
+    val buffname: StateFlow<String> = _buffname
 
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    fun getCharacterEquipment(serverId: String, characterId: String) {
+    fun getBuffCharacterEquipment(serverId: String, characterId: String) {
         getBufferEquipmentUseCase(serverId, characterId).onEach { resource ->
             when (resource) {
                 is Resource.Success -> {
                     val characterResponse = resource.data
                     if (characterResponse != null) {
-//                        _equipment.value = characterResponse.equipment
-//                        Log.d("_equipment",_equipment.value.toString())
+                        _bufferEquipment.value = characterResponse.skill.buff.equipment
+
+                        _bufflevel.value = characterResponse.skill.buff.skillInfo.option.level
+                        _buffname.value = characterResponse.skill.buff.skillInfo.name
+
+                        Log.d("_equipment",_bufferEquipment.value.toString())
                     }
                 }
                 is Resource.Error -> {
