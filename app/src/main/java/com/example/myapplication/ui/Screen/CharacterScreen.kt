@@ -103,7 +103,7 @@ fun CharacterSearchScreen(
     var selectedOption by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
 
-    val context= LocalContext.current
+    val context = LocalContext.current
 
 
     val options = listOf(
@@ -228,22 +228,6 @@ fun CharacterSearchScreen(
                                 5.dp
                             )
                         ) {
-                            OutlinedButton(
-                                onClick = {
-                                    navController.navigate("장착장비")
-                                },
-                                border = BorderStroke(1.dp, Color.Blue),
-                                shape = RoundedCornerShape(50), // = 50% percent
-                                // or shape = CircleShape
-                                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
-                            ) {
-                                Text(
-                                    text = "장비 조회",
-                                    fontSize = 12.sp,
-                                    color = Color.Blue,
-                                    fontWeight = FontWeight.W100
-                                )
-                            }
                             IconButton(onClick = {
                                 viewModel.deleteCharacter(character.id)
                                 viewModel.resetImageCheck()
@@ -255,34 +239,68 @@ fun CharacterSearchScreen(
                 }
             }
             if (imgCheck) {
-                profileImg?.let {
-                    CharacterSettingScreen(
-                        adventureNameIds,
-                        characterNameIds.toString(),
-                        inputServerId,
-                        jobGrowNameIds,
-                        GuildNameIds,
-                        it
-                    )
+                Column(
+                    verticalArrangement = Arrangement.Center
+                )
+                {
+                    profileImg?.let {
+                        CharacterSettingScreen(
+                            adventureNameIds,
+                            characterNameIds.toString(),
+                            inputServerId,
+                            jobGrowNameIds,
+                            GuildNameIds,
+                            it
+                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth() // Box가 가로 방향으로 화면을 가득 채우도록 설정
+                                .padding(vertical = 16.dp), // 위아래 여백 추가
+                            contentAlignment = Alignment.Center // 가운데 정렬
+                        ) {
+
+                            OutlinedButton(
+                                onClick = {
+                                    navController.navigate("장착장비")
+                                },
+                                border = BorderStroke(1.dp, Color.Blue),
+                                shape = RoundedCornerShape(50), // = 50% percent
+                                // or shape = CircleShape
+                                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Blue)
+                            ) {
+                                Text(
+                                    text = "장비 조회",
+                                    fontSize = 25.sp,
+                                    color = Color.Blue,
+                                    fontWeight = FontWeight.W100
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 }
-fun saveCharacterId(context: Context, characterId: String , serverId: String) {
-    val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+
+fun saveCharacterId(context: Context, characterId: String, serverId: String) {
+    val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
     val editor = sharedPreferences.edit()
     editor.putString("characterId", characterId)
-    editor.putString("serverId",serverId)
+    editor.putString("serverId", serverId)
     editor.apply()
 }
+
 fun getCharacterId(context: Context): Pair<String?, String?> {
-    val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+    val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
     val characterId = sharedPreferences.getString("characterId", null)
     val serverId = sharedPreferences.getString("serverId", null)
     // Return both as a Pair
     return Pair(characterId, serverId)
 }
+
 fun getServerString(serverId: String): String? {
     val serverMap = mapOf(
         "cain" to "카인",

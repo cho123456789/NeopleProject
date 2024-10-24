@@ -1,10 +1,14 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresExtension
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 
@@ -27,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    @SuppressLint("UnusedContentLambdaTargetStateParameter")
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,15 +45,25 @@ class MainActivity : AppCompatActivity() {
                             //HomeScreen(navController = navController)
                             CharacterSearchScreen(navController = navController)
                         }
-                        composable("장착장비"){
-                            EquipmentScreen(
-                                navController = navController
-                            )
+                        composable("장착장비",
+                            enterTransition = { EnterTransition.None },
+                            exitTransition = { ExitTransition.None },
+                            popEnterTransition = { EnterTransition.None },
+                            popExitTransition = { ExitTransition.None }
+                        ){
+                                EquipmentScreen(
+                                    navController = navController
+                                )
                         }
-                        composable("버프강화"){
-                            BuffEquipmentScreen(
-                                navController = navController
-                            )
+                        composable("버프강화",
+                            enterTransition = { EnterTransition.None }, // 애니메이션 비활성화
+                            exitTransition = { ExitTransition.None }   ,
+                            popEnterTransition = { EnterTransition.None },
+                            popExitTransition = { ExitTransition.None },// 애니메이션 비활성화
+                            ){
+                                BuffEquipmentScreen(
+                                    navController = navController
+                                )
                         }
                         composable("크리쳐") {
                             MainScreen(navController = navController)

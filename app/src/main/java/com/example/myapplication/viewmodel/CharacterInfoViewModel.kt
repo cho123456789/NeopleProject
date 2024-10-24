@@ -105,6 +105,8 @@ class CharacterInfoViewModel @Inject constructor(
                         if (characterIds != null && characterName != null) {
                             _characterId.value = characterIds
                             _characterName.value = characterName
+
+                            Log.d("tag", _characterId.value.toString())
                             getCharacterImage(serverId,characterIds.joinToString(", "))
                             getCharacterSetting(serverId,characterIds.joinToString(", "))
                             //getBuffEquipment(serverId,characterIds.joinToString(", "))

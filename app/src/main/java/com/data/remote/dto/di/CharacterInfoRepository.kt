@@ -2,16 +2,22 @@ package com.data.remote.dto.di
 
 import com.data.remote.NeoplelmageService
 import com.data.remote.NeopleApiService
+import com.data.remote.repository.BufferAvatarRepositoryImpl
+import com.data.remote.repository.BufferCreatureRepositoryImpl
 import com.data.remote.repository.BufferEquipmentRepositoryImpl
 import com.data.remote.repository.CharacterEquipmentRepositorylmpl
 import com.data.remote.repository.CharacterImageRepositoryImpl
 import com.data.remote.repository.CharacterInfoRepositoryImpl
 import com.data.remote.repository.CharacterSettingRepositoryImpl
+import com.domain.respository.BufferAvatarRepository
+import com.domain.respository.BufferCreatureRepository
 import com.domain.respository.BufferEquipmentRepository
 import com.domain.respository.CharacterEquipmentRepository
 import com.domain.respository.CharacterImageRepository
 import com.domain.respository.CharacterInfoRepository
 import com.domain.respository.CharacterSettingRepository
+import com.domain.use_case.GetBufferAvatarUseCase
+import com.domain.use_case.GetBufferCreatureUseCase
 import com.domain.use_case.GetBufferEquipmentUseCase
 import com.domain.use_case.GetCharacterEquipmentUseCase
 import com.domain.use_case.GetCharacterImageUseCase
@@ -26,6 +32,18 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
+
+    @Provides
+    @Singleton
+    fun provideBufferCreatureRepository(api : NeopleApiService): BufferCreatureRepository {
+        return BufferCreatureRepositoryImpl(api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBufferAvatarRepository(api : NeopleApiService): BufferAvatarRepository {
+        return BufferAvatarRepositoryImpl(api)
+    }
 
     @Provides
     @Singleton
@@ -57,6 +75,19 @@ object RepositoryModule {
         return CharacterEquipmentRepositorylmpl(api)
     }
 
+
+    @Provides
+    @Singleton
+    fun provideGetCreatureEquipmentUseCase(repository: BufferCreatureRepository): GetBufferCreatureUseCase {
+        return GetBufferCreatureUseCase(repository)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideGetAvatarEquipmentUseCase(repository: BufferAvatarRepository): GetBufferAvatarUseCase {
+        return GetBufferAvatarUseCase(repository)
+    }
 
     @Provides
     @Singleton

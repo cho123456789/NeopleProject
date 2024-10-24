@@ -1,5 +1,7 @@
 package com.data.remote.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class BufferAvaterDto(
     val serverId: String,
     val characterId: String,
@@ -13,17 +15,16 @@ data class BufferAvaterDto(
     val adventureName: String,
     val guildId: String,
     val guildName: String,
-    val skill: Skill
+    val skill: AvatarSkill,
 )
 
-
 data class AvatarSkill(
-    val buff: Buff
+    val buff: AvatarBuff
 )
 
 
 data class AvatarBuff(
-    val skillInfo: SkillInfo,
+    val skillInfo: AvatarSkillInfo,
     val avatar: List<Avatar>
 )
 
@@ -42,25 +43,25 @@ data class Option(
 )
 
 data class Avatar(
-    val slotId: String,
-    val slotName: String,
-    val itemId: String,
-    val itemName: String,
-    val itemRarity: String,
-    val clone: Clone,
-    val optionAbility: String,
-    val emblems: List<Emblem>
+    @SerializedName("slotId") val slotId: String,
+    @SerializedName("slotName") val slotName: String,
+    @SerializedName("itemId") val itemId: String,
+    @SerializedName("itemName") val itemName: String,
+    @SerializedName("itemRarity") val itemRarity: String,
+    @SerializedName("clone") val clone: Clone,
+    @SerializedName("optionAbility") val optionAbility: String,
+    @SerializedName("emblems") val emblems: List<Emblem>
 )
 
 data class Clone(
-    val itemId: String?,
-    val itemName: String?
+    @SerializedName("itemId")val itemId: String?,
+    @SerializedName("itemName")val itemName: String?
 )
 
 data class Emblem(
-    val slotNo: Int,
-    val slotColor: String,
-    val itemId: String,
-    val itemName: String,
-    val itemRarity: String
+    @SerializedName("slotNo")val slotNo: Int,
+    @SerializedName("slotColor")val slotColor: String,
+    @SerializedName("itemId")val itemId: String,
+    @SerializedName("itemName")val itemName: String,
+    @SerializedName("itemRarity")val itemRarity: String
 )

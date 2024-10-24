@@ -58,6 +58,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.accompanist:accompanist-navigation-animation:0.33.0-alpha") // 최신 버전으로 변경할 수 있습니다.
     implementation(libs.androidx.room)
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
