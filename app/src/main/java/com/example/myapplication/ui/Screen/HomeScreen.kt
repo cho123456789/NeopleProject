@@ -42,7 +42,7 @@ fun HomeScreen(
                 backgroundColor = Color.Yellow),
                 shape = CircleShape,
             onClick = {
-                navController.navigate("notifications")
+                navController.navigate("캐릭터검색")
             }
         ) {
             Text(

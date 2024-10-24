@@ -42,8 +42,8 @@ class MainActivity : AppCompatActivity() {
                     NavHost(navController = navController, startDestination = "home") {
                         composable("home") {
                             // Pass the navController down to the CharacterSearchScreen
-                            //HomeScreen(navController = navController)
-                            CharacterSearchScreen(navController = navController)
+                            HomeScreen(navController = navController)
+                            //CharacterSearchScreen(navController = navController)
                         }
                         composable("장착장비",
                             enterTransition = { EnterTransition.None },
@@ -67,6 +67,9 @@ class MainActivity : AppCompatActivity() {
                         }
                         composable("크리쳐") {
                             MainScreen(navController = navController)
+                        }
+                        composable("캐릭터검색") {
+                            CharacterSearchScreen(navController = navController)
                         }
                     }
                     //BottomNavigationBar(navController)

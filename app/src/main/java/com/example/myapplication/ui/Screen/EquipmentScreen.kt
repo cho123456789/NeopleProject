@@ -116,7 +116,7 @@ fun EquipmentScreen(
                         IconButton(
                             modifier = Modifier.size(15.dp),
                             onClick = {
-                                navController.navigate("home")
+                                navController.navigate("캐릭터검색")
                             }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.arrow),
