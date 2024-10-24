@@ -4,6 +4,7 @@
 ## 프로젝트 소개
 -Neople API 활용해서 캐릭터 장비 정보 조회 실시 
 - (clean Architecture) / Compose 구조 활용
+- clean 아키텍처 브랜치
 
 
 ## 개발 환경:
