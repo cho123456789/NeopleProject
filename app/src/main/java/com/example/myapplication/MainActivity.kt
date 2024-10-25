@@ -21,11 +21,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.data.remote.dto.BufferEquipment
 import com.data.remote.dto.Item
+import com.example.myapplication.ui.Screen.AvatarScreen
 import com.example.myapplication.ui.Screen.BuffEquipmentScreen
 import com.example.myapplication.ui.Screen.CharacterSearchScreen
 import com.example.myapplication.ui.Screen.EquipmentScreen
 import com.example.myapplication.ui.Screen.HomeScreen
 import com.example.myapplication.ui.Screen.MainScreen
+import com.example.myapplication.ui.Screen.TalismanScreen
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -70,6 +72,12 @@ class MainActivity : AppCompatActivity() {
                         }
                         composable("캐릭터검색") {
                             CharacterSearchScreen(navController = navController)
+                        }
+                        composable("아바타") {
+                            AvatarScreen(navController = navController)
+                        }
+                        composable("탈리스만") {
+                            TalismanScreen(navController = navController)
                         }
                     }
                     //BottomNavigationBar(navController)

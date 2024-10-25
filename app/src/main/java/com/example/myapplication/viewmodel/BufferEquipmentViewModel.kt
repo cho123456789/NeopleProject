@@ -44,13 +44,6 @@ class BufferEquipmentViewModel @Inject constructor(
     private val _bufferCreatureName = MutableStateFlow<List<String>>(emptyList())
     val bufferCreatureName: StateFlow<List<String>> = _bufferCreatureName
 
-
-    private val _bufferAvataritem = MutableStateFlow<String>("")
-    val bufferAvataritem: StateFlow<String> = _bufferAvataritem
-
-    private val _bufferSlotitem = MutableStateFlow<String>("")
-    val bufferSlotitem: StateFlow<String> = _bufferSlotitem
-
     private val _bufflevel = MutableStateFlow<Int>(0)
     val bufflevel: StateFlow<Int> = _bufflevel
 

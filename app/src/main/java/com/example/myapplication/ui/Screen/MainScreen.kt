@@ -82,5 +82,5 @@ sealed class Screen(val route: String, val title: String, val icon: Int) {
     object Equipment : Screen("장착장비", "장착장비", R.drawable.ic_equipment)
     object BuffEnhance : Screen("버프강화", "버프강화", R.drawable.ic_buff_enhance)
     object Avatar : Screen("아바타", "아바타", R.drawable.ic_avatar)
-    object Creature : Screen("크리쳐", "크리쳐", R.drawable.ic_creature)
+    object Creature : Screen("탈리스만", "탈리스만", R.drawable.ic_creature)
 }

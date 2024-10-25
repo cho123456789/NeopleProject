@@ -16,3 +16,7 @@ val NameOragne = Color(0xFFF07B14)
 val PurpleBink = Color(0xFFFF00FF)
 
 val Blue = Color(0xFF465B99)
+
+val YellowNormal = Color(0xFFFFD700)
+
+val allNomarl = Color(0xFFB2ADCF)
