@@ -13,8 +13,7 @@
 - 던파캣 : https://dfcat.net/
 
 ## 활용 기능  
-- (clean Architecture) / Compose 구조 활용
-- clean 아키텍처 브랜치
+- clean Architecture / Compose 구조 활용
 - Room / navigation / di 
 
 ## 프로젝트 목표 
