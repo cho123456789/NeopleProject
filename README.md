@@ -40,5 +40,13 @@
         <li>검색 기록 삭제</li>
       </ul>
     </td>
+     <td>
+      <img src="https://github.com/user-attachments/assets/6aec9d28-fc63-4435-8ed0-bf5ca2742d6d" alt="캐릭터 검색" width="300"/>
+      <h3>캐릭터 정보 조회</h3>
+      <ul>
+        <li>캐릭터 장비 조회</li>
+        <li>캐릭터 버프 강화 조회</li>
+      </ul>
+    </td>
   </tr>
 </table>
