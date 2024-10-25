@@ -22,27 +22,21 @@
 - 캐릭터 장비 - 구현완료 (~09/09)
 - 캐릭터 버프강화 - 구현완료 (10/24)
 - 
-##  홈화면
 <table>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/96c64dfd-c4b1-4fe2-a4a3-d154a642a8db" alt="splash" width="300"/></td>
     <td>
+      <img src="https://github.com/user-attachments/assets/96c64dfd-c4b1-4fe2-a4a3-d154a642a8db" alt="홈 화면" width="300"/>
       <h3>홈 화면</h3>
       <ul>
-        <li>캐릭터 검색 화면으로 이동</li>
+        <li>캐릭터 검색 화면 이동</li>
       </ul>
     </td>
-  </tr>
-</table>
-
-<table>
-  <tr>
-    <td><img src="https://github.com/user-attachments/assets/bb653a77-6560-4ce2-bf5e-e371242e1108" alt="splash" width="300"/></td>
     <td>
-      <h3>캐릭터 장비 정보</h3>
+      <img src="https://github.com/user-attachments/assets/e6daafcb-f14f-4f81-946e-1eea36b50a92" alt="캐릭터 검색" width="300"/>
+      <h3>캐릭터 검색</h3>
       <ul>
-        <li>캐릭터 장비 조회</li>
-        <li>검색을 버튼으로 캐릭터의 장비를 불러옵니다.</li>
+        <li>캐릭터 프로필 정보 확인</li>
+        <li>검색 기록 삭제</li>
       </ul>
     </td>
   </tr>
