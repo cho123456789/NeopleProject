@@ -14,7 +14,8 @@
 
 ## 활용 기능  
 - clean Architecture / Compose 구조 활용
-- Room / navigation / di 
+- Room / navigation / di
+- okHttp, rerofit
 
 ## 프로젝트 목표 
 - 캐릭터 장비 / 크리쳐 / 버프강화 등.. 캐릭터 정보를 볼수있는 어플리케이션 제작
