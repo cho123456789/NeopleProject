@@ -21,16 +21,14 @@
 - 캐릭터 장비 - 구현완료 (~09/09) (Room 적용 및 홈화면 제작 완료)
 - 캐릭터 버프강화 - 구현완료 (10/24)
 - 
-##  캐릭터 장비 출력 
-
+##  홈화면
 <table>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/9c27af14-1949-4b66-936e-13d8a27ee09c" alt="splash" width="300"/></td>
+    <td><img src="https://github.com/user-attachments/assets/96c64dfd-c4b1-4fe2-a4a3-d154a642a8db" alt="splash" width="300"/></td>
     <td>
-      <h3>캐릭터 검색</h3>
+      <h3>홈 화면</h3>
       <ul>
-        <li>캐릭터 이름 및 서버 입력</li>
-        <li>검색을 버튼으로 캐릭터의 정보를 불러옵니다.</li>
+        <li>캐릭터 검색 화면으로 이동</li>
       </ul>
     </td>
   </tr>
