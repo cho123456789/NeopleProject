@@ -1,4 +1,4 @@
-## DNF 캐릭터 정보 조회 (토이 프로젝트) (진행중) 
+## DNF 캐릭터 정보 조회 (토이 프로젝트)
 
 
 ## 프로젝트 소개
@@ -48,6 +48,13 @@
         <li>캐릭터 버프 강화 조회</li>
       </ul>
     </td>
+     <td>
+      <img src="https://github.com/user-attachments/assets/417e702b-0485-454c-89ff-37bcd32280cc" alt="캐릭터 검색" width="300"/>
+      <h3>캐릭터 아바타</h3>
+      <ul>
+        <li>캐릭터 장착 아바타 조회</li>
+        <li>캐릭터 장착 탈리스만 조회</li>
+      </ul>
+    </td>
   </tr>
 </table>
-![Screen_recording_20241030_144840-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/417e702b-0485-454c-89ff-37bcd32280cc)
