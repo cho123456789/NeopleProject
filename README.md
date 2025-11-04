@@ -24,37 +24,60 @@
 
 ## 프로젝트 결과
 <table>
-  <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/96c64dfd-c4b1-4fe2-a4a3-d154a642a8db" alt="홈 화면" width="300"/>
-      <h3>홈 화면</h3>
-      <ul>
-        <li>캐릭터 검색 화면 이동</li>
-      </ul>
-    </td>
-    <td>
-      <img src="https://github.com/user-attachments/assets/e6daafcb-f14f-4f81-946e-1eea36b50a92" alt="캐릭터 검색" width="300"/>
-      <h3>캐릭터 검색</h3>
-      <ul>
-        <li>캐릭터 프로필 정보 확인</li>
-        <li>검색 기록 삭제</li>
-      </ul>
-    </td>
-     <td>
-      <img src="https://github.com/user-attachments/assets/6aec9d28-fc63-4435-8ed0-bf5ca2742d6d" alt="캐릭터 검색" width="300"/>
-      <h3>캐릭터 정보 조회</h3>
-      <ul>
-        <li>캐릭터 장비 조회</li>
-        <li>캐릭터 버프 강화 조회</li>
-      </ul>
-    </td>
-     <td>
-      <img src="https://github.com/user-attachments/assets/417e702b-0485-454c-89ff-37bcd32280cc" alt="캐릭터 검색" width="300"/>
-      <h3>캐릭터 아바타</h3>
-      <ul>
-        <li>캐릭터 장착 아바타 조회</li>
-        <li>캐릭터 장착 탈리스만 조회</li>
-      </ul>
-    </td>
-  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/96c64dfd-c4b1-4fe2-a4a3-d154a642a8db" alt="홈 화면" width="300"/>
+    </td>
+    <td>
+      <h3>홈 화면</h3>
+      <ul>
+        <li><b>캐릭터 검색 화면 이동</b> 기능 제공</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/e6daafcb-f14f-4f81-946e-1eea36b50a92" alt="캐릭터 검색" width="300"/>
+    </td>
+    <td>
+      <h3>캐릭터 검색</h3>
+      <ul>
+        <li><b>캐릭터 프로필 검색<b>기능</li>
+        <li><b>검색 기록 삭제<b> 기능</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/6aec9d28-fc63-4435-8ed0-bf5ca2742d6d" alt="캐릭터 정보 조회" width="300"/>
+    </td>
+    <td>
+      <h3>캐릭터 정보 조회</h3>
+      <ul>
+        <li><b>캐릭터 장비 조회<b></li>
+        <li><b>캐릭터 버프 강화 조회<b></li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/417e702b-0485-454c-89ff-37bcd32280cc" alt="캐릭터 아바타" width="300"/>
+    </td>
+    <td>
+      <h3>캐릭터 아바타</h3>
+      <ul>
+        <li>캐릭터 <b>장착 아바타 조회<b></li>
+        <li>캐릭터 <b>장착 탈리스만 조회<b></li>
+      </ul>
+    </td>
+  </tr>
 </table>
