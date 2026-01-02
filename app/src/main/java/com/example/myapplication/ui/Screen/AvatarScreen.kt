@@ -38,10 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.data.remote.dto.Avatar
 import com.data.remote.dto.AvatarItem
-import com.data.remote.dto.BufferEquipment
-import com.data.remote.dto.CreatureDto
 import com.data.remote.dto.Enchant
 import com.data.remote.dto.Item
 import com.data.remote.dto.SetItem
@@ -61,7 +58,6 @@ import com.example.myapplication.ui.theme.PurpleGrey40
 import com.example.myapplication.ui.theme.YellowNormal
 import com.example.myapplication.ui.theme.allNomarl
 import com.example.myapplication.viewmodel.AvatarViewModel
-import com.example.myapplication.viewmodel.BufferEquipmentViewModel
 import com.example.myapplication.viewmodel.CharacterEquipmentViewModel
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)

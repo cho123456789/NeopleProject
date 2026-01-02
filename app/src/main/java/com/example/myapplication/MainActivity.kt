@@ -19,15 +19,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.data.remote.dto.BufferEquipment
-import com.data.remote.dto.Item
 import com.example.myapplication.ui.Screen.AvatarScreen
-import com.example.myapplication.ui.Screen.BuffEquipmentScreen
 import com.example.myapplication.ui.Screen.CharacterSearchScreen
 import com.example.myapplication.ui.Screen.EquipmentScreen
 import com.example.myapplication.ui.Screen.HomeScreen
 import com.example.myapplication.ui.Screen.MainScreen
-import com.example.myapplication.ui.Screen.TalismanScreen
+import com.example.myapplication.ui.Screen.MistAssimilationScreen
+import com.example.myapplication.ui.Screen.StatusScreen
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,15 +55,25 @@ class MainActivity : AppCompatActivity() {
                                     navController = navController
                                 )
                         }
-                        composable("버프강화",
-                            enterTransition = { EnterTransition.None }, // 애니메이션 비활성화
-                            exitTransition = { ExitTransition.None }   ,
+                        composable(
+                            route = "안개융화/{serverId}/{characterId}",
+                            arguments = listOf(
+                                navArgument("serverId") { type = NavType.StringType },
+                                navArgument("characterId") { type = NavType.StringType }
+                            ),
+                            enterTransition = { EnterTransition.None },
+                            exitTransition = { ExitTransition.None },
                             popEnterTransition = { EnterTransition.None },
-                            popExitTransition = { ExitTransition.None },// 애니메이션 비활성화
-                            ){
-                                BuffEquipmentScreen(
-                                    navController = navController
-                                )
+                            popExitTransition = { ExitTransition.None }
+                        ) { backStackEntry ->
+                            val serverId = backStackEntry.arguments?.getString("serverId") ?: ""
+                            val characterId =
+                                backStackEntry.arguments?.getString("characterId") ?: ""
+                            MistAssimilationScreen(
+                                navController = navController,
+                                serverId = serverId,
+                                characterId = characterId
+                            )
                         }
                         composable("크리쳐") {
                             MainScreen(navController = navController)
@@ -76,8 +84,21 @@ class MainActivity : AppCompatActivity() {
                         composable("아바타") {
                             AvatarScreen(navController = navController)
                         }
-                        composable("탈리스만") {
-                            TalismanScreen(navController = navController)
+                        composable(
+                            route = "능력치/{serverId}/{characterId}",
+                            arguments = listOf(
+                                navArgument("serverId") { type = NavType.StringType },
+                                navArgument("characterId") { type = NavType.StringType }
+                            )
+                        ) { backStackEntry ->
+                            val serverId = backStackEntry.arguments?.getString("serverId") ?: ""
+                            val characterId =
+                                backStackEntry.arguments?.getString("characterId") ?: ""
+                            StatusScreen(
+                                navController = navController,
+                                serverId = serverId,
+                                characterId = characterId
+                            )
                         }
                     }
                     //BottomNavigationBar(navController)
@@ -93,10 +114,11 @@ class MainActivity : AppCompatActivity() {
         //MainScreen()
         HomeScreen(navController)
     }
-@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-@Preview(showBackground = true)
-@Composable
-   fun PreviewMainContainer() {
+
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    @Preview(showBackground = true)
+    @Composable
+    fun PreviewMainContainer() {
         MaterialTheme{
             MyApp()
         }

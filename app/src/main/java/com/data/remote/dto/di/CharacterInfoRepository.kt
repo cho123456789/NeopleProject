@@ -1,37 +1,31 @@
 package com.data.remote.dto.di
 
-import com.data.remote.NeoplelmageService
 import com.data.remote.NeopleApiService
+import com.data.remote.NeoplelmageService
 import com.data.remote.repository.AvatarRepositoryImpl
-import com.data.remote.repository.BufferAvatarRepositoryImpl
-import com.data.remote.repository.BufferCreatureRepositoryImpl
-import com.data.remote.repository.BufferEquipmentRepositoryImpl
 import com.data.remote.repository.CharacterEquipmentRepositorylmpl
 import com.data.remote.repository.CharacterImageRepositoryImpl
 import com.data.remote.repository.CharacterInfoRepositoryImpl
 import com.data.remote.repository.CharacterSettingRepositoryImpl
 import com.data.remote.repository.ItemRepositoryImpl
-import com.data.remote.repository.TalismanRepositoryImpl
+import com.data.remote.repository.MistAssimilationRepositoryImpl
+import com.data.remote.repository.StatusRepositoryImpl
 import com.domain.respository.AvatarRepository
-import com.domain.respository.BufferAvatarRepository
-import com.domain.respository.BufferCreatureRepository
-import com.domain.respository.BufferEquipmentRepository
 import com.domain.respository.CharacterEquipmentRepository
 import com.domain.respository.CharacterImageRepository
 import com.domain.respository.CharacterInfoRepository
 import com.domain.respository.CharacterSettingRepository
 import com.domain.respository.ItemRepository
-import com.domain.respository.TalismanRepository
+import com.domain.respository.MistAssimilationRepository
+import com.domain.respository.StatusRepository
 import com.domain.use_case.GetAvatarUseCase
-import com.domain.use_case.GetBufferAvatarUseCase
-import com.domain.use_case.GetBufferCreatureUseCase
-import com.domain.use_case.GetBufferEquipmentUseCase
 import com.domain.use_case.GetCharacterEquipmentUseCase
 import com.domain.use_case.GetCharacterImageUseCase
 import com.domain.use_case.GetCharacterInfoUseCase
 import com.domain.use_case.GetCharacterSettingUseCase
 import com.domain.use_case.GetItemDetailUseCase
-import com.domain.use_case.GetTalismanUseCase
+import com.domain.use_case.GetMistAssimilationUseCase
+import com.domain.use_case.GetStatusUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,7 +36,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
 
-
     @Provides
     @Singleton
     fun provideItemRepository(api : NeopleApiService): ItemRepository {
@@ -51,32 +44,20 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideTalismanRepository(api : NeopleApiService): TalismanRepository {
-        return TalismanRepositoryImpl(api)
+    fun provideStatusRepository(api: NeopleApiService): StatusRepository {
+        return StatusRepositoryImpl(api)
     }
 
     @Provides
     @Singleton
-    fun provideAvatarRepository(api : NeopleApiService): AvatarRepository {
+    fun provideMistAssimilationRepository(api: NeopleApiService): MistAssimilationRepository {
+        return MistAssimilationRepositoryImpl(api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAvatarRepository(api: NeopleApiService): AvatarRepository {
         return AvatarRepositoryImpl(api)
-    }
-
-    @Provides
-    @Singleton
-    fun provideBufferCreatureRepository(api : NeopleApiService): BufferCreatureRepository {
-        return BufferCreatureRepositoryImpl(api)
-    }
-
-    @Provides
-    @Singleton
-    fun provideBufferAvatarRepository(api : NeopleApiService): BufferAvatarRepository {
-        return BufferAvatarRepositoryImpl(api)
-    }
-
-    @Provides
-    @Singleton
-    fun provideBufferEquipmentRepository(api : NeopleApiService): BufferEquipmentRepository {
-        return BufferEquipmentRepositoryImpl(api)
     }
 
     @Provides
@@ -103,19 +84,22 @@ object RepositoryModule {
         return CharacterEquipmentRepositorylmpl(api)
     }
 
-
-
     @Provides
     @Singleton
     fun provideGetItemDetailUseCase(repository: ItemRepository): GetItemDetailUseCase {
         return GetItemDetailUseCase(repository)
     }
 
+    @Provides
+    @Singleton
+    fun provideGetStatusUseCase(repository: StatusRepository): GetStatusUseCase {
+        return GetStatusUseCase(repository)
+    }
 
     @Provides
     @Singleton
-    fun provideGetTalismanUseCase(repository: TalismanRepository): GetTalismanUseCase {
-        return GetTalismanUseCase(repository)
+    fun provideGetMistAssimilationUseCase(repository: MistAssimilationRepository): GetMistAssimilationUseCase {
+        return GetMistAssimilationUseCase(repository)
     }
 
     @Provides
@@ -126,33 +110,16 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideGetCreatureEquipmentUseCase(repository: BufferCreatureRepository): GetBufferCreatureUseCase {
-        return GetBufferCreatureUseCase(repository)
-    }
-
-
-    @Provides
-    @Singleton
-    fun provideGetAvatarEquipmentUseCase(repository: BufferAvatarRepository): GetBufferAvatarUseCase {
-        return GetBufferAvatarUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetBufferEquipmentUseCase(repository: BufferEquipmentRepository): GetBufferEquipmentUseCase {
-        return GetBufferEquipmentUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
     fun provideGetCharacterInfoUseCase(repository: CharacterInfoRepository): GetCharacterInfoUseCase {
         return GetCharacterInfoUseCase(repository)
     }
+
     @Provides
     @Singleton
     fun provideGetCharacterSettingUseCase(repository: CharacterSettingRepository): GetCharacterSettingUseCase {
         return GetCharacterSettingUseCase(repository)
     }
+
     @Provides
     @Singleton
     fun provideGetCharacterImageUseCase(repository: CharacterImageRepository): GetCharacterImageUseCase {

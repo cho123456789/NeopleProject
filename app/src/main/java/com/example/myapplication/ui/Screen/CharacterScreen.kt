@@ -72,7 +72,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.data.remote.room.AppDatabase
 import com.example.myapplication.R
-import com.example.myapplication.viewmodel.BufferEquipmentViewModel
 import com.example.myapplication.viewmodel.CharacterEquipmentViewModel
 import com.example.myapplication.viewmodel.CharacterInfoViewModel
 import com.google.gson.Gson

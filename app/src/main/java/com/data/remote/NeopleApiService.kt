@@ -1,15 +1,10 @@
 package com.data.remote
-import com.data.remote.dto.Avatar
 import com.data.remote.dto.AvatarDto
-import com.data.remote.dto.Buff
-import com.data.remote.dto.BufferAvaterDto
-import com.data.remote.dto.BufferCreatureDto
-import com.data.remote.dto.BufferEquipment
-import com.data.remote.dto.BufferEquipmentDto
 import com.data.remote.dto.CharacterInfoDto
 import com.data.remote.dto.EquipmentDto
 import com.data.remote.dto.ItemDto
-import com.data.remote.dto.TalismanDto
+import com.data.remote.dto.MistAssimilationDto
+import com.data.remote.dto.StatusDto
 import com.example.myapplication.network.CharacterResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -40,26 +35,12 @@ interface NeopleApiService {
         @Query("apikey") apiKey: String,
     ): Response<EquipmentDto>
 
-    @GET("df/servers/{serverId}/characters/{characterId}/skill/buff/equip/equipment")
-    suspend fun getBufferEquipment(
+    @GET("df/servers/{serverId}/characters/{characterId}/equip/mist-assimilation")
+    suspend fun getMistAssimilation(
         @Path("serverId") serverId: String,
         @Path("characterId") characterId: String,
         @Query("apikey") apiKey: String
-    ):Response<BufferEquipmentDto>
-
-    @GET("df/servers/{serverId}/characters/{characterId}/skill/buff/equip/avatar")
-    suspend fun getBufferAvatar(
-        @Path("serverId") serverId: String,
-        @Path("characterId") characterId: String,
-        @Query("apikey") apiKey: String
-    ):Response<BufferAvaterDto>
-
-    @GET("df/servers/{serverId}/characters/{characterId}/skill/buff/equip/creature")
-    suspend fun getBufferCreature(
-        @Path("serverId") serverId: String,
-        @Path("characterId") characterId: String,
-        @Query("apikey") apiKey: String
-    ):Response<BufferCreatureDto>
+    ): Response<MistAssimilationDto>
 
     @GET("df/servers/{serverId}/characters/{characterId}/equip/avatar")
     suspend fun getAvatar(
@@ -68,12 +49,12 @@ interface NeopleApiService {
         @Query("apikey") apiKey: String
     ):Response<AvatarDto>
 
-    @GET("df/servers/{serverId}/characters/{characterId}/equip/talisman")
-    suspend fun getTalisman(
+    @GET("df/servers/{serverId}/characters/{characterId}/status")
+    suspend fun getStatus(
         @Path("serverId") serverId: String,
         @Path("characterId") characterId: String,
         @Query("apikey") apiKey: String
-    ):Response<TalismanDto>
+    ): Response<StatusDto>
 
     @GET("df/items/{itemId}")
     suspend fun getItemDetail(

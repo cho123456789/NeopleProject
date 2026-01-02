@@ -14,13 +14,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.common.Resource
-import com.data.remote.dto.BufferEquipment
 import com.data.remote.dto.Item
 import com.data.remote.room.AppDatabase
 import com.data.remote.room.CharacterDao
 import com.data.remote.room.CharacterDto
 import com.domain.model.characterDto
-import com.domain.use_case.GetBufferEquipmentUseCase
 import com.domain.use_case.GetCharacterEquipmentUseCase
 import com.domain.use_case.GetCharacterImageUseCase
 import com.domain.use_case.GetCharacterInfoUseCase

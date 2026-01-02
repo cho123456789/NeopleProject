@@ -14,6 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,7 +22,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.R
-import com.example.myapplication.viewmodel.BufferEquipmentViewModel
 import java.util.Locale
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
@@ -39,13 +39,14 @@ fun BottomNavigationBar(navController: NavController,
 
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route
+    val context = LocalContext.current
 
     // 바텀 네비게이션 아이템
     val items = listOf(
         Screen.Equipment,
-        Screen.BuffEnhance,
+        Screen.MistAssimilation,
         Screen.Avatar,
-        Screen.Creature
+        Screen.Status
     )
 
     BottomNavigation(
@@ -64,23 +65,58 @@ fun BottomNavigationBar(navController: NavController,
                             .padding(5.dp)
                     )
                 },
-                selected = currentRoute == screen.route,
+                selected = currentRoute == screen.route || currentRoute?.startsWith(screen.route) == true,
                 selectedContentColor = Color.Blue, // 선택된 항목 색상
                 unselectedContentColor = Color.Gray, // 선택되지 않은 항목 색상
                 onClick = {
-                    navController.navigate(screen.route) {
-                        // 중복된 항목 클릭 시 이전 상태로 돌아가지 않도록 설정
-                        launchSingleTop = true
-                        restoreState = true
+                    when (screen) {
+                        is Screen.Status -> {
+                            // SharedPreferences에서 서버ID와 캐릭터ID 가져오기
+                            val (characterId, serverId) = getCharacterInfo(context)
+                            if (characterId != null && serverId != null) {
+                                navController.navigate("능력치/$serverId/$characterId") {
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            }
+                        }
+
+                        is Screen.MistAssimilation -> {
+                            // SharedPreferences에서 서버ID와 캐릭터ID 가져오기
+                            val (characterId, serverId) = getCharacterInfo(context)
+                            if (characterId != null && serverId != null) {
+                                navController.navigate("안개융화/$serverId/$characterId") {
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            }
+                        }
+
+                        else -> {
+                            navController.navigate(screen.route) {
+                                // 중복된 항목 클릭 시 이전 상태로 돌아가지 않도록 설정
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
                     }
                 }
             )
         }
     }
 }
+
+fun getCharacterInfo(context: android.content.Context): Pair<String?, String?> {
+    val sharedPreferences =
+        context.getSharedPreferences("MyPrefs", android.content.Context.MODE_PRIVATE)
+    val characterId = sharedPreferences.getString("characterId", null)
+    val serverId = sharedPreferences.getString("serverId", null)
+    return Pair(characterId, serverId)
+}
+
 sealed class Screen(val route: String, val title: String, val icon: Int) {
     object Equipment : Screen("장착장비", "장착장비", R.drawable.ic_equipment)
-    object BuffEnhance : Screen("버프강화", "버프강화", R.drawable.ic_buff_enhance)
+    object MistAssimilation : Screen("안개융화", "안개융화", R.drawable.ic_buff_enhance)
     object Avatar : Screen("아바타", "아바타", R.drawable.ic_avatar)
-    object Creature : Screen("탈리스만", "탈리스만", R.drawable.ic_creature)
+    object Status : Screen("능력치", "능력치", R.drawable.ic_creature)
 }

@@ -19,7 +19,7 @@ data class ItemDto (
     @SerializedName("setItemName") val setItemName: String? = null,
     @SerializedName("jobs") val jobs: List<Job>,
     @SerializedName("itemStatus") val itemStatus: List<ItemStatus>,
-    @SerializedName("talismanInfo") val talismanInfo: TalismanInfo,
+    @SerializedName("talismanInfo") val talismanInfo: TalismanInfo? = null,
     @SerializedName("obtainInfo") val obtainInfo: ObtainInfo
 )
 
