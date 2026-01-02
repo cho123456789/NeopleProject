@@ -7,10 +7,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -32,40 +30,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.data.remote.dto.Avatar
-import com.data.remote.dto.AvatarItem
-import com.data.remote.dto.BufferEquipment
-import com.data.remote.dto.CreatureDto
-import com.data.remote.dto.Enchant
-import com.data.remote.dto.Item
-import com.data.remote.dto.SetItem
-import com.data.remote.dto.SirocoInfo
-import com.data.remote.dto.SirocoOption
-import com.data.remote.dto.Status
-import com.data.remote.dto.Talisman
-import com.data.remote.dto.TalismanDto
+import com.data.remote.dto.ItemDto
 import com.data.remote.dto.TalismanWithRunes
-import com.data.remote.dto.TransformInfo
-import com.data.remote.dto.UpgradeInfo
 import com.example.myapplication.R
-import com.example.myapplication.ui.theme.Blue
-import com.example.myapplication.ui.theme.NameOragne
-import com.example.myapplication.ui.theme.NameYellow
-import com.example.myapplication.ui.theme.Pink80
-import com.example.myapplication.ui.theme.Purple80
-import com.example.myapplication.ui.theme.PurpleBink
-import com.example.myapplication.ui.theme.PurpleGrey40
-import com.example.myapplication.ui.theme.YellowNormal
-import com.example.myapplication.ui.theme.allNomarl
-import com.example.myapplication.viewmodel.AvatarViewModel
-import com.example.myapplication.viewmodel.BufferEquipmentViewModel
-import com.example.myapplication.viewmodel.CharacterEquipmentViewModel
 import com.example.myapplication.viewmodel.TalismanViewModel
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
@@ -77,6 +48,9 @@ fun TalismanScreen(
 
     ) {
     val talismans by viewModel.talismansItem.collectAsState(initial = emptyList())
+    val itemDetail by viewModel.ItemDetail.collectAsState(initial = null)
+//    val slotone by viewModel.slotone.collectAsState()
+//    val slottwo by viewModel.slotwo.collectAsState()
     val context = LocalContext.current
     val (characterId, serverId) = getCharacterId(context)
 
@@ -96,8 +70,10 @@ fun TalismanScreen(
             CircularProgressIndicator() // 가운데에 배치
         }
     } else {
-        Log.d("AvatarItemScreen", talismans.toString())
-
+        Log.d("talismansScreen", talismans.toString())
+        Log.d("itemDetail", itemDetail.toString())
+//        Log.d("slotone", slotone.toString())
+//        Log.d("slottwo", slottwo.toString())
         Column(
             modifier = Modifier.fillMaxSize() // 전체 화면 차지
         ) {
@@ -128,7 +104,7 @@ fun TalismanScreen(
                             .fillMaxWidth()
                             .padding(5.dp)
                     ) {
-                        TalismanCard(item)
+                       TalismanCard(item)
                     }
                 }
             }
@@ -139,6 +115,7 @@ fun TalismanScreen(
 
 @Composable
 fun TalismanCard(talismanItem: TalismanWithRunes) {
+
     Column(
         modifier = Modifier.padding(10.dp)
     ) {
@@ -169,6 +146,15 @@ fun TalismanCard(talismanItem: TalismanWithRunes) {
                                 color = Color.Magenta,
                                 fontSize = 20.sp
                             )
+//                            if(talismanItem.talisman.itemName == slotone?.itemName)
+//                            {
+//                                Text(
+//                                    text = slotone.itemExplain,
+//                                    fontWeight = FontWeight.Bold,
+//                                    color = Color.Magenta,
+//                                    fontSize = 15.sp
+//                                )
+//                            }
                         }
                         Column(
                             Modifier.fillMaxSize()
@@ -217,6 +203,11 @@ fun TalismanCard(talismanItem: TalismanWithRunes) {
                                     )
                                 }
                             }
+                            Divider(
+                                modifier = Modifier.padding(vertical = 5.dp),
+                                color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f), // 색상 조절
+                                thickness = 1.dp // 두께 조절
+                            )
                         }
                     }
                 }

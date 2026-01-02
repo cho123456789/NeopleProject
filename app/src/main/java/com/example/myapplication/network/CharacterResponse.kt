@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class CharacterResponse(
     @SerializedName("rows")
-    val charactItem: List<CharacterInfoDto>
+    val charactItem: List<CharacterInfoDto>?
 )

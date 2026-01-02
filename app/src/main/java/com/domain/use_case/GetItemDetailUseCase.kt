@@ -6,54 +6,55 @@ import android.util.Log
 import androidx.annotation.RequiresExtension
 import com.common.Constants.API_KEY
 import com.common.Resource
-import com.domain.respository.CharacterInfoRepository
-import com.example.myapplication.network.CharacterResponse
+import com.data.remote.dto.Avatar
+import com.data.remote.dto.AvatarDto
+import com.data.remote.dto.Buff
+import com.data.remote.dto.BufferAvaterDto
+import com.data.remote.dto.BufferEquipment
+import com.data.remote.dto.BufferEquipmentDto
+import com.data.remote.dto.CharacterInfoDto
+import com.data.remote.dto.EquipmentDto
+import com.data.remote.dto.ItemDto
+import com.domain.respository.AvatarRepository
+import com.domain.respository.BufferAvatarRepository
+import com.domain.respository.BufferEquipmentRepository
+import com.domain.respository.CharacterEquipmentRepository
+import com.domain.respository.CharacterSettingRepository
+import com.domain.respository.ItemRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
 import javax.inject.Inject
 
-class GetCharacterInfoUseCase @Inject constructor(
-    private val repository: CharacterInfoRepository
+class GetItemDetailUseCase @Inject constructor(
+    private val repository: ItemRepository
 ) {
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    operator fun invoke(serverId: String, characterName: String): Flow<Resource<CharacterResponse>> =
+    operator fun invoke(itemId: String, apiKey: String): Flow<Resource<ItemDto>> =
         flow {
             emit(Resource.Loading())
             try {
-                // Log the request parameters
-                Log.d(
-                    "GetCharacterInfoUseCase",
-                    "Requesting character info - serverId: $serverId, characterName: $characterName, apiKey: $API_KEY"
-                )
-
                 // Fetch the response from the repository
-                val response = repository.getCharacterInfo(serverId, characterName, API_KEY)
+                val response = repository.getItemDetail(itemId,apiKey)
                 // Log the raw JSON response
-                //Log.d("API Response", response.raw().toString())
+                Log.d("API Response", response.raw().toString())
 
                 // Check if the response is successful
                 if (response.isSuccessful) {
                     val info = response.body()
                     //Log.d("Parsed Response", info.toString()) // 로그에 파싱된 데이터 출력
-                    Log.d("GetCharacterInfoUseCase", "Success - Data: $info")
                     if (info != null) {
                         emit(Resource.Success(info))
                     } else {
                         emit(Resource.Error("No data available"))
                     }
                 } else {
-                    val errorBody = response.errorBody()?.string()
-                    val errorMsg = "Error ${response.code()}: ${response.message()}"
-                    Log.e("GetCharacterInfoUseCase", "$errorMsg - Body: $errorBody")
-                    emit(Resource.Error("$errorMsg${if (errorBody != null) " - $errorBody" else ""}"))
+                    emit(Resource.Error("Error ${response.code()}: ${response.message()}"))
                 }
             } catch (e: HttpException) {
-                Log.e("GetCharacterInfoUseCase", "HttpException", e)
                 emit(Resource.Error("Connection error"))
             } catch (e: IOException) {
-                Log.e("GetCharacterInfoUseCase", "IOException", e)
                 emit(Resource.Error("Code error"))
             }
-        }
+    }
 }

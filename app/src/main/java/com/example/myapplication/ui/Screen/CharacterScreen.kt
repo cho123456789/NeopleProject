@@ -29,6 +29,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -95,12 +96,14 @@ fun CharacterSearchScreen(
     val adventureNameIds by viewModel.adventureName.collectAsState()
     val profileImg by viewModel.imageBitmap.collectAsState()
     val imgCheck by viewModel.ImageCheck.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
     val characterId = characterIds.joinToString()
 
     var inputCharacterName by remember { mutableStateOf("") }
     var inputServerId by remember { mutableStateOf("") }
 
-    var selectedOption by remember { mutableStateOf("") }
+    var selectedOption by remember { mutableStateOf("cain") }
     var expanded by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
@@ -171,28 +174,39 @@ fun CharacterSearchScreen(
                     value = inputCharacterName,
                     onValueChange = { inputCharacterName = it },
                     label = { Text("캐릭터 이름 입력", color = Color.Gray) },
+                    placeholder = { Text("예: 홍길동", color = Color.LightGray, fontSize = 14.sp) },
                     modifier = Modifier
                         .padding(5.dp)
                         .fillMaxWidth()
                         .border(1.dp, Color.Black),
                     singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Search
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onSearch = {
+                            viewModel.clearErrorMessage()
+                            if (inputCharacterName.isBlank()) {
+                                viewModel.setErrorMessage("캐릭터 이름을 입력해주세요.")
+                            } else {
+                                viewModel.getCharacterInfo(
+                                    selectedOption,
+                                    inputCharacterName.trim()
+                                )
+                            }
+                        }
+                    ),
                     trailingIcon = {
                         IconButton(onClick = {
-                            viewModel.getCharacterInfo(selectedOption, inputCharacterName)
-
-
-                            viewModel.addCharacter(
-                                characterId = characterId,
-                                inputServerId = selectedOption,
-                                characterNameIds = inputCharacterName
-                            )
-
-                            saveCharacterId(
-                                context = context,
-                                characterId = characterId,
-                                serverId = selectedOption
-                            )
-
+                            viewModel.clearErrorMessage()
+                            if (inputCharacterName.isBlank()) {
+                                viewModel.setErrorMessage("캐릭터 이름을 입력해주세요.")
+                            } else {
+                                viewModel.getCharacterInfo(
+                                    selectedOption,
+                                    inputCharacterName.trim()
+                                )
+                            }
                         }) {
                             Icon(Icons.Default.Search, contentDescription = null)
                         }
@@ -200,6 +214,34 @@ fun CharacterSearchScreen(
                     colors = TextFieldDefaults.textFieldColors(
                         backgroundColor = Color.White
                     )
+                )
+            }
+            errorMessage?.let { msg ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .border(
+                            width = 1.dp,
+                            color = Color.Red,
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                        .padding(12.dp)
+                ) {
+                    Text(
+                        text = msg,
+                        color = Color.Red,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    )
+                }
+            }
+            if (isLoading) {
+                Text(
+                    text = "로딩 중...",
+                    color = Color.Gray,
+                    modifier = Modifier.padding(8.dp),
+                    fontSize = 16.sp
                 )
             }
             // 캐릭터 리스트
@@ -214,6 +256,7 @@ fun CharacterSearchScreen(
                             .fillMaxWidth()
                             .clickable {
                                 Log.d("character.characterServer", character.characterServer)
+                                viewModel.clearErrorMessage()
                                 viewModel.getCharacterInfo(
                                     character.characterServer,
                                     character.characterName

@@ -80,6 +80,11 @@ class CharacterInfoViewModel @Inject constructor(
     private val _equipment = MutableStateFlow<List<Item>>(emptyList())
     val equipment: StateFlow<List<Item>> = _equipment
 
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
 
     init {
         loadCharacters()
@@ -93,10 +98,17 @@ class CharacterInfoViewModel @Inject constructor(
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun getCharacterInfo(serverId: String, characterNameItem: String) {
+        if (serverId.isEmpty()) {
+            _errorMessage.value = "서버를 선택해주세요."
+            return
+        }
         viewModelScope.launch(Dispatchers.IO) {
+            _errorMessage.value = null
+            _isLoading.value = true
             getCharacterInfoUseCase(serverId, characterNameItem).onEach { resource ->
                 when (resource) {
                     is Resource.Success -> {
+                        _isLoading.value = false
                         val characterResponse = resource.data
                         val servers = characterResponse?.charactItem
                         val characterIds = servers?.map { it.characterId }
@@ -107,27 +119,47 @@ class CharacterInfoViewModel @Inject constructor(
                             _characterName.value = characterName
 
                             Log.d("tag", _characterId.value.toString())
-                            getCharacterImage(serverId,characterIds.joinToString(", "))
-                            getCharacterSetting(serverId,characterIds.joinToString(", "))
+                            val characterIdJoined = characterIds.joinToString(", ")
+                            val characterNameJoined = characterName.joinToString(", ")
+
+                            getCharacterImage(serverId, characterIdJoined)
+                            getCharacterSetting(serverId, characterIdJoined)
                             //getBuffEquipment(serverId,characterIds.joinToString(", "))
                             saveCharacter(
                                 context = context,
-                                characterId = characterIds.joinToString(", "),
+                                characterId = characterIdJoined,
                                 serverId = serverId
                             )
+
+                            // 자동으로 캐릭터를 데이터베이스에 저장
+                            viewModelScope.launch {
+                                // 중복 체크: 같은 characterId가 이미 있는지 확인
+                                val existingCharacters = characterDao.getAllCharacters()
+                                val isAlreadyExists = existingCharacters.any {
+                                    it.characterId == characterIdJoined && it.characterServer == serverId
+                                }
+
+                                if (!isAlreadyExists) {
+                                    addCharacter(
+                                        characterId = characterIdJoined,
+                                        inputServerId = serverId,
+                                        characterNameIds = characterNameJoined
+                                    )
+                                }
+                            }
+                        } else {
+                            setErrorMessage("캐릭터를 찾을 수 없습니다.")
                         }
                     }
 
                     is Resource.Error -> {
-                        CharacterListState(
-                            error = resource.message ?: "An unexpected error occurred"
-                        ).toString()
+                        _isLoading.value = false
+                        setErrorMessage(resource.message ?: "캐릭터 조회 중 오류가 발생했습니다.")
+                        Log.e("CharacterInfoViewModel", "Error: ${resource.message}")
                     }
 
                     is Resource.Loading -> {
-                        CharacterListState(
-                            isLoading = resource.message ?: "data Loading..."
-                        ).toString()
+                        _isLoading.value = true
                     }
 
                     else -> {}
@@ -229,7 +261,17 @@ class CharacterInfoViewModel @Inject constructor(
             }.launchIn(viewModelScope)
         }
     }
+
+    fun clearErrorMessage() {
+        _errorMessage.value = null
+    }
+
+    fun setErrorMessage(message: String) {
+        _errorMessage.value = message
+    }
+
 }
+
 fun saveCharacter(context: Context, characterId: String, serverId: String) {
     // Call the use case or repository to save the character ID
     saveCharacterId(context, characterId, serverId)

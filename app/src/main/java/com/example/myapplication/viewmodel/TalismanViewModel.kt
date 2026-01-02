@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.annotation.RequiresExtension
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.common.Constants.API_KEY
 import com.common.Resource
 import com.data.remote.dto.Avatar
 import com.data.remote.dto.AvatarDto
@@ -14,6 +15,7 @@ import com.data.remote.dto.BufferCreatureDto
 import com.data.remote.dto.BufferEquipment
 import com.data.remote.dto.CreatureDto
 import com.data.remote.dto.Item
+import com.data.remote.dto.ItemDto
 import com.data.remote.dto.TalismanDto
 import com.data.remote.dto.TalismanWithRunes
 import com.domain.use_case.GetAvatarUseCase
@@ -21,6 +23,7 @@ import com.domain.use_case.GetBufferAvatarUseCase
 import com.domain.use_case.GetBufferCreatureUseCase
 import com.domain.use_case.GetBufferEquipmentUseCase
 import com.domain.use_case.GetCharacterEquipmentUseCase
+import com.domain.use_case.GetItemDetailUseCase
 import com.domain.use_case.GetTalismanUseCase
 import com.presentation.CharacterListState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,11 +36,22 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TalismanViewModel @Inject constructor(
-    private val getTalismanUseCase: GetTalismanUseCase
+    private val getTalismanUseCase: GetTalismanUseCase,
+    private val getItemDetailUseCase: GetItemDetailUseCase
 ) : ViewModel() {
 
     private val _talismansItem = MutableStateFlow<List<TalismanWithRunes>>(emptyList())
     val talismansItem: StateFlow<List<TalismanWithRunes>> = _talismansItem
+
+    private val _ItemDetail = MutableStateFlow<ItemDto?>(null)
+    val ItemDetail: StateFlow<ItemDto?> = _ItemDetail
+
+    private val _slotone = MutableStateFlow<ItemDto?>(null)
+    val slotone: StateFlow<ItemDto?> = _slotone
+
+    private val _slotwo = MutableStateFlow<String>("")
+    val slotwo: StateFlow<String> = _slotwo
+
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun getTalismans(serverId: String, characterId: String) {
@@ -47,7 +61,74 @@ class TalismanViewModel @Inject constructor(
                     val characterResponse = resource.data
                     if (characterResponse != null) {
                         _talismansItem.value = characterResponse.talismans
-                        Log.d("avatar",characterResponse.toString())
+
+
+                        val filteredTalisone = characterResponse.talismans.filter { talisman ->
+                            talisman.talisman.slotNo == 1
+                        }
+                        val filteredTalistwo = characterResponse.talismans.filter { talisman ->
+                            talisman.talisman.slotNo == 2
+                        }
+
+                        filteredTalisone.forEach { talisman ->
+                            val currentItemId = talisman.talisman.itemId
+                            getItemDetailone(currentItemId, API_KEY)
+                        }
+
+                        filteredTalistwo.forEach { talisman ->
+                            val currentItemId = talisman.talisman.itemId
+                            getItemDetailtwo(currentItemId, API_KEY)
+                        }
+
+
+                        Log.d("tailsmans",characterResponse.toString())
+                    }
+                }
+                is Resource.Error -> {
+                    CharacterListState(
+                        error = resource.message ?: "An unexpected error occurred"
+                    ).toString()
+                }
+                is Resource.Loading -> {
+                    CharacterListState(
+                        isLoading = resource.message ?: "data Loading..."
+                    ).toString()
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    fun getItemDetailone(itemId: String, apiKey: String) {
+        getItemDetailUseCase(itemId,apiKey).onEach { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val characterResponse = resource.data
+                    if (characterResponse != null) {
+                        _slotone.value = characterResponse
+                    }
+                }
+                is Resource.Error -> {
+                    CharacterListState(
+                        error = resource.message ?: "An unexpected error occurred"
+                    ).toString()
+                }
+                is Resource.Loading -> {
+                    CharacterListState(
+                        isLoading = resource.message ?: "data Loading..."
+                    ).toString()
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+    fun getItemDetailtwo(itemId: String, apiKey: String) {
+        getItemDetailUseCase(itemId,apiKey).onEach { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val characterResponse = resource.data
+                    if (characterResponse != null) {
+                        _slotwo.value = characterResponse.itemExplain
+                        Log.d("itemDetail",characterResponse.toString())
                     }
                 }
                 is Resource.Error -> {

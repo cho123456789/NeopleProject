@@ -10,6 +10,7 @@ import com.data.remote.repository.CharacterEquipmentRepositorylmpl
 import com.data.remote.repository.CharacterImageRepositoryImpl
 import com.data.remote.repository.CharacterInfoRepositoryImpl
 import com.data.remote.repository.CharacterSettingRepositoryImpl
+import com.data.remote.repository.ItemRepositoryImpl
 import com.data.remote.repository.TalismanRepositoryImpl
 import com.domain.respository.AvatarRepository
 import com.domain.respository.BufferAvatarRepository
@@ -19,6 +20,7 @@ import com.domain.respository.CharacterEquipmentRepository
 import com.domain.respository.CharacterImageRepository
 import com.domain.respository.CharacterInfoRepository
 import com.domain.respository.CharacterSettingRepository
+import com.domain.respository.ItemRepository
 import com.domain.respository.TalismanRepository
 import com.domain.use_case.GetAvatarUseCase
 import com.domain.use_case.GetBufferAvatarUseCase
@@ -28,6 +30,7 @@ import com.domain.use_case.GetCharacterEquipmentUseCase
 import com.domain.use_case.GetCharacterImageUseCase
 import com.domain.use_case.GetCharacterInfoUseCase
 import com.domain.use_case.GetCharacterSettingUseCase
+import com.domain.use_case.GetItemDetailUseCase
 import com.domain.use_case.GetTalismanUseCase
 import dagger.Module
 import dagger.Provides
@@ -39,6 +42,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
 
+
+    @Provides
+    @Singleton
+    fun provideItemRepository(api : NeopleApiService): ItemRepository {
+        return ItemRepositoryImpl(api)
+    }
 
     @Provides
     @Singleton
@@ -92,6 +101,14 @@ object RepositoryModule {
     @Singleton
     fun provideCharacterEquipmentRepository(api : NeopleApiService): CharacterEquipmentRepository {
         return CharacterEquipmentRepositorylmpl(api)
+    }
+
+
+
+    @Provides
+    @Singleton
+    fun provideGetItemDetailUseCase(repository: ItemRepository): GetItemDetailUseCase {
+        return GetItemDetailUseCase(repository)
     }
 
 

@@ -28,7 +28,7 @@ fun HomeScreen(
     Column (
     ){
         Image(
-            painter = painterResource(id = R.drawable.main),
+            painter = painterResource(id = R.drawable.main2),
             contentDescription = ""
         )
         Image(

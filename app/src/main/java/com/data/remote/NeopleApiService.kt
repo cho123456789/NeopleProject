@@ -8,6 +8,7 @@ import com.data.remote.dto.BufferEquipment
 import com.data.remote.dto.BufferEquipmentDto
 import com.data.remote.dto.CharacterInfoDto
 import com.data.remote.dto.EquipmentDto
+import com.data.remote.dto.ItemDto
 import com.data.remote.dto.TalismanDto
 import com.example.myapplication.network.CharacterResponse
 import okhttp3.ResponseBody
@@ -73,4 +74,10 @@ interface NeopleApiService {
         @Path("characterId") characterId: String,
         @Query("apikey") apiKey: String
     ):Response<TalismanDto>
+
+    @GET("df/items/{itemId}")
+    suspend fun getItemDetail(
+        @Path("itemId") itemId: String,
+        @Query("apikey") apiKey: String
+    ):Response<ItemDto>
 }
